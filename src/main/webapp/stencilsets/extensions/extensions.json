@@ -20,7 +20,7 @@
 			"addExtensions" : []
 		},
 		{
-			"title":"jBPM BPMN2 (Minimal Version)",
+			"title":"jBPM BPMN2 (Minimal)",
 			"namespace":"http://b3mn.org/stencilset/bpmn2.0minimal#",
 			"description":"jBPM Minimal BPMN2 Features",
 			"stencilset":"http://b3mn.org/stencilset/bpmn2.0#",

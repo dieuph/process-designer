@@ -734,6 +734,18 @@ ORYX.Plugins.PropertyWindow = {
 							editorGrid = new Ext.Editor(cf);
 							break;
 						
+						case ORYX.CONFIG.TYPE_ACTION_END:
+							var cf = new Ext.form.ComplexActionsEndField({
+								allowBlank: pair.optional(),
+								dataSource:this.dataSource,
+								grid:this.grid,
+								row:index,
+								facade:this.facade
+							});
+							cf.on('dialogClosed', this.dialogClosed, {scope:this, row:index, col:1,field:cf});							
+							editorGrid = new Ext.Editor(cf);
+							break;	
+							
 						case ORYX.CONFIG.TYPE_GLOBAL:
 							var cf = new Ext.form.ComplexGlobalsField({
 								allowBlank: pair.optional(),
@@ -1700,7 +1712,7 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
     	actions.load();
     	
     	if(this.value.length > 0) {
-    		var valueParts = this.value.split(",");
+    		var valueParts = this.value.split("`");
     		for(var i=0; i < valueParts.length; i++) {
     			var nextPart = valueParts[i];
     			if(nextPart.indexOf(":") > 0) {
@@ -1890,12 +1902,231 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
                 		if(this.data['action'].length > 0) {
                 			if(this.data['template'].length > 0 && this.data['template_language'].length > 0 && this.data['notification_type'].length > 0) {
                 				if(this.data['description'].length > 0) {
-                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ":" + this.data['description'] + ",";	
+                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ":" + this.data['description'] + "`";	
                 				} else {
-                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ",";
+                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + "`";
                 				}
                 			} else {
-                				outValue += this.data['action'] + ",";
+                				outValue += this.data['action'] + "`";
+                			}
+                		}
+                    });
+                	if(outValue.length > 0) {
+                		outValue = outValue.slice(0, -1)
+                	}
+					this.setValue(outValue);
+					this.dataSource.getAt(this.row).set('value', outValue)
+					this.dataSource.commitChanges()
+
+					dialog.hide()
+                }.bind(this)
+            }, {
+                text: ORYX.I18N.PropertyWindow.cancel,
+                handler: function(){
+					this.setValue(this.value);
+                	dialog.hide()
+                }.bind(this)
+            }]
+		});		
+				
+		dialog.show();		
+		grid.render();
+
+		this.grid.stopEditing();
+		grid.focus( false, 100 );
+    }
+});
+
+Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
+	/**
+     * If the trigger was clicked a dialog has to be opened
+     * to enter the values for the complex property.
+     */
+    onTriggerClick : function() {
+    	if(this.disabled){
+            return;
+        }
+    	
+    	var ActionDef = Ext.data.Record.create([{
+            name: 'action'
+        },{
+        	name: 'script'
+        },{
+        	name: 'script_language'
+        }]);
+    	
+    	var actionsProxy = new Ext.data.MemoryProxy({
+            root: []
+        });
+    	
+    	var actions = new Ext.data.Store({
+    		autoDestroy: true,
+            reader: new Ext.data.JsonReader({
+                root: "root"
+            }, ActionDef),
+            proxy: actionsProxy,
+            sorters: [{
+                property: 'action',
+                direction:'ASC'
+            }]
+        });
+    	actions.load();
+    	
+    	if(this.value.length > 0) {
+    		var valueParts = this.value.split("`");
+    		for(var i=0; i < valueParts.length; i++) {
+    			var nextPart = valueParts[i];
+    			if(nextPart.indexOf(":") > 0) {
+    				var innerParts = nextPart.split(":");
+    				if(innerParts[2] == "beanshell" || innerParts[2] == "drl" || innerParts[2] == "groovy" || innerParts[2] == "javascript" || innerParts[2] == "python" || innerParts[2] == "ruby") {
+        				actions.add(new ActionDef({
+            				action: innerParts[0],
+            				script: innerParts[1],
+            				script_language: innerParts[2]
+        				}));
+    				} else {
+    					actions.add(new ActionDef({
+            				action: innerParts[0],
+            				script: innerParts[1],
+            				script_language: ''
+        				}));
+    				}
+    			} else {
+    				actions.add(new ActionDef({
+                        action: nextPart,
+                        script: '',
+                        script_language: ''
+                    }));
+    			}
+    		}
+    	}
+    	
+    	var itemDeleter = new Extensive.grid.ItemDeleter();
+    	
+    	var scriptLanguageData = new Array();
+    	var beanshell = new Array();
+    	beanshell.push("beanshell");
+    	beanshell.push("beanshell");
+    	scriptLanguageData.push(beanshell);
+    	var drl = new Array();
+    	drl.push("drl");
+    	drl.push("drl");
+    	scriptLanguageData.push(drl);
+    	var groovy = new Array();
+    	groovy.push("groovy");
+    	groovy.push("groovy");
+    	scriptLanguageData.push(groovy);
+    	var javascript = new Array();
+    	javascript.push("javascript");
+    	javascript.push("javascript");
+    	scriptLanguageData.push(javascript);
+    	var python = new Array();
+    	python.push("python");
+    	python.push("python");
+    	scriptLanguageData.push(python);
+    	var ruby = new Array();
+    	ruby.push("ruby");
+    	ruby.push("ruby");
+    	scriptLanguageData.push(ruby);
+    	
+    	var gridId = Ext.id();
+    	var grid = new Ext.grid.EditorGridPanel({
+            store: actions,
+            id: gridId,
+            stripeRows: true,
+            cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
+            	id: 'action',
+                header: 'Action',
+                width: 100,
+                dataIndex: 'action',
+                editor: new Ext.form.TextField({ allowBlank: false })
+            },{
+            	id: 'script',
+            	header: 'Script',
+            	width: 400,
+            	dataIndex: 'script',
+            	editor: new Ext.form.TextArea({
+                    id: Ext.id(),
+                    value: this.value,
+                    autoScroll: true
+                })
+            },{
+            	id: 'script_language',
+            	header: 'Script Language',
+            	width: 120,
+            	dataIndex: 'script_language',
+            	editor: new Ext.form.ComboBox({
+            		id: 'scriptLanguageCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: scriptLanguageData
+					})
+            	})
+            },itemDeleter]),
+    		selModel: itemDeleter,
+            autoHeight: true,
+            tbar: [{
+                text: 'Add Action',
+                handler : function(){
+                	actions.add(new ActionDef({
+                        action: '',
+                        script: '',
+                        script_language: ''
+                    }));
+                    grid.fireEvent('cellclick', grid, actions.getCount()-1, 1, null);
+                }
+            }],
+            clicksToEdit: 1
+        });
+    	
+    	var dialog = new Ext.Window({ 
+			layout		: 'anchor',
+			autoCreate	: true, 
+			title		: 'Editor for Actions', 
+			height		: 350,
+			width		: 750, 
+			modal		: true,
+			collapsible	: false,
+			fixedcenter	: true, 
+			shadow		: true, 
+			resizable   : true,
+			proxyDrag	: true,
+			autoScroll  : true,
+			keys:[{
+				key	: 27,
+				fn	: function(){
+						dialog.hide()
+				}.bind(this)
+			}],
+			items		:[grid],
+			listeners	:{
+				hide: function(){
+					this.fireEvent('dialogClosed', this.value);
+					//this.focus.defer(10, this);
+					dialog.destroy();
+				}.bind(this)				
+			},
+			buttons		: [{
+                text: ORYX.I18N.PropertyWindow.ok,
+                handler: function(){	 
+                	var outValue = "";
+                	grid.getView().refresh();
+                	grid.stopEditing();
+                	actions.data.each(function() {
+                		if(this.data['action'].length > 0) {
+                			if(this.data['script'].length > 0 && this.data['script_language'].length > 0) {
+                				outValue += this.data['action'] + ":" + this.data['script'] + ":" + this.data['script_language'] + "`";
+                			} else {
+                				outValue += this.data['action'] + "`";
                 			}
                 		}
                     });
@@ -2029,7 +2260,9 @@ Ext.form.ComplexDataAssignmenField = Ext.extend(Ext.form.TriggerField,  {
         }, {
         	name: 'tostr'
         }, {
-                name: 'dataType'
+            name: 'dataType'
+        }, {
+        	name: 'roleType'
         }
         ]);
     	

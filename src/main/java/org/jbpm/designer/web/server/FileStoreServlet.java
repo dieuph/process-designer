@@ -29,7 +29,6 @@ public class FileStoreServlet extends HttpServlet {
     	String fext = req.getParameter("fext");
     	String data = req.getParameter("data");
     	if(fext != null && fext.equals("bpmn2")) {
-    		System.out.println("FNAME: " + fname + " FEXT: " + fext + " DATA: " + data);
     		try {
 				resp.setContentType("application/xml; charset=UTF-8");
 				resp.setHeader("Content-Disposition",

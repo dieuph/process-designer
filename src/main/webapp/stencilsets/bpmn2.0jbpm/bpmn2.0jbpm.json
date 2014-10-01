@@ -5042,7 +5042,7 @@
 		{
 			"type" : "node",
 			"id": "EndNoneEvent",
-			"title": "End Event",
+			"title": "End Event Node",
 			"title_de" : "End-Ereignis",
 			"groups" : ["End Events"],
 			"groups_de" : ["End-Ereignisse"],

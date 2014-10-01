@@ -214,7 +214,7 @@ public class Bpmn2JsonUnmarshaller {
      * @throws IOException
      */
     private Bpmn2Resource unmarshall(JsonParser parser, String preProcessingData) throws JsonParseException, IOException {
-        try {
+    	try {
             parser.nextToken(); // open the object
             ResourceSet rSet = new ResourceSetImpl();
             rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("bpmn2",
@@ -2317,7 +2317,33 @@ public class Bpmn2JsonUnmarshaller {
         } else {
             ee.setName("");
         }
-        
+        // process on-entry and on-exit actions as custom elements
+        if(properties.get("onentryactionsofend") != null && properties.get("onentryactionsofend").length() > 0) {
+            String[] allActions = properties.get("onentryactionsofend").split( "\\|\\s*" );
+            for(String action : allActions) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(action));
+                
+                String scriptLanguage = "http://www.java.com/java";
+//                if(properties.get("script_language").equals("java")) {	
+//                    scriptLanguage = "http://www.java.com/java";
+//                } else if(properties.get("script_language").equals("mvel")) {
+//                    scriptLanguage = "http://www.mvel.org/2.0";
+//                } else {
+//                    // default to java
+//                    scriptLanguage = "http://www.java.com/java";
+//                }
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(ee.getExtensionValues() == null || ee.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	ee.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                ee.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
 //        List<EventDefinition> definitions = ee.getEventDefinitions();
 //            if (definitions != null && !definitions.isEmpty()){
 //                EventDefinition ed = definitions.get(0);

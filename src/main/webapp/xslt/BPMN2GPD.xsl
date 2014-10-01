@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
-	xmlns="urn:liferay.com:liferay-workflow_6.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	exclude-result-prefixes="xsl bpmn2">
+<xsl:stylesheet version="2.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns="urn:liferay.com:liferay-workflow_6.2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://exslt.org/common"
+	exclude-result-prefixes="xsl bpmn2 ext">
 
     <!-- @author Ph.D -->
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"
@@ -26,7 +29,7 @@
 		</name>
 		<description>Something like description</description>
 		<version>
-			<xsl:value-of select="./@*[3]" />
+			<xsl:value-of select="./@*[2]" />
 		</version>
 		<xsl:apply-templates select="*" />
 	</xsl:template>
@@ -65,12 +68,18 @@
 				</xsl:call-template>
 			</metadata>
 			<actions>
-				<!-- <notification> -->
-				<!-- <name>coming</name> -->
-				<!-- </notification> -->
+                <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="nodeName" select="substring-before(substring-after(name(.), ':'), '-')" />
+                        <xsl:call-template name="notification">
+                            <xsl:with-param name="notiInfo" select="current()" />
+                            <xsl:with-param name="notiType" select="$nodeName" />
+                        </xsl:call-template>
+                </xsl:for-each>
 			</actions>
 			<assignments>
-				<user />
+			    <xsl:call-template name="roles">
+			        <xsl:with-param name="ioSpecId" select="./bpmn2:ioSpecification/@id" />
+			    </xsl:call-template>
 			</assignments>
 			<transitions>
 				<xsl:for-each select="./bpmn2:outgoing">
@@ -126,25 +135,18 @@
 				</xsl:call-template>
 			</metadata>
 			<actions>
-				<action>
-					<name>
-						<xsl:call-template name="action">
-							<xsl:with-param name="incomingId" select="./bpmn2:incoming" />
-						</xsl:call-template>
-					</name>
-					<script>
-						<xsl:call-template name="metadata">
-							<xsl:with-param name="docContent" select="./bpmn2:documentation" />
-						</xsl:call-template>
-					</script>
-					<script-language>javascript</script-language>
-					<execution-type>onEntry</execution-type>
-				</action>
+				<xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="nodeName" select="substring-before(substring-after(name(.), ':'), '-')" />
+                        <xsl:call-template name="action">
+                            <xsl:with-param name="notiInfo" select="current()" />
+                            <xsl:with-param name="notiType" select="$nodeName" />
+                        </xsl:call-template>
+                </xsl:for-each>
 			</actions>
 		</state>
 	</xsl:template>
 
-	<!-- ********************* NOW IS THE TIME FOR FUNCTION POWER ********************* -->
+	<!-- ********************* [[[[ NOW IS THE TIME FOR FUNCTION POWER ]]]] ********************* -->
 
 	<!-- ******* Function for metadata - bpmn2:documentation ******* -->
 	<xsl:template name="metadata">
@@ -186,7 +188,7 @@
 	</xsl:template>
 
 	<!-- ******* Function looking for transition - bpmn2:incoming ******* -->
-	<xsl:template name="action">
+	<xsl:template name="transitionIn">
 		<xsl:param name="incomingId" />
 		<xsl:variable name="sequenceFlowId" select="normalize-space($incomingId)" />
 		<xsl:if test="count($incomingId) > 0">
@@ -207,7 +209,108 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
+    
+    <!-- ******* Function for notification - bpmn2:extensionElements ******* -->
+    <xsl:template name="notification">
+        <xsl:param name="notiInfo" />
+        <xsl:param name="notiType" />
+        <xsl:if test="count($notiInfo) > 0">
+            <xsl:variable name="notiArray">
+                <xsl:call-template name="split">
+	                <xsl:with-param name="text" select="$notiInfo" />
+	            </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="notiElement" select="ext:node-set($notiArray)/*" />
+            <notification>
+	            <name>
+                    <xsl:value-of select="$notiElement[1]" />
+	            </name>
+	            <template>
+	                <xsl:value-of select="$notiElement[2]" />
+	            </template>
+	            <template-language>
+                    <xsl:value-of select="$notiElement[3]" />
+                </template-language>
+	            <notification-type>
+	                <xsl:value-of select="$notiElement[4]" />
+	            </notification-type>
+	            <xsl:if test="string($notiType) = string('onEntry')">
+	                <execution-type>onAssignment</execution-type>
+	            </xsl:if>
+	            <xsl:if test="string($notiType) = string('onExit')">
+	                <execution-type>onExit</execution-type>
+	            </xsl:if>
+	        </notification>
+        </xsl:if>
+    </xsl:template>
 
+    <!-- ******* Function for action of End Event - bpmn2:extensionElements ******* -->
+    <xsl:template name="action">
+        <xsl:param name="notiInfo" />
+        <xsl:param name="notiType" />
+        <xsl:if test="count($notiInfo) > 0">
+            <xsl:variable name="notiArray">
+                <xsl:call-template name="split">
+                    <xsl:with-param name="text" select="$notiInfo" />
+                </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="notiElement" select="ext:node-set($notiArray)/*" />
+            <action>
+                <name>
+                    <xsl:value-of select="$notiElement[1]" />
+                </name>
+                <script>
+                    <xsl:value-of select="$notiElement[2]" />
+                </script>
+                <script-language>
+                    <xsl:value-of select="$notiElement[3]" />
+                </script-language>
+                <execution-type>onEntry</execution-type>
+            </action>
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- ******* Split function ******* -->
+    <xsl:template name="split">
+        <xsl:param name="text" />
+        <xsl:param name="elementName" select="'word'" />
+        <xsl:if test="string-length($text)">
+            <xsl:element name="{$elementName}">
+                <xsl:value-of select="substring-before(concat($text, ':'), ':')" />
+            </xsl:element>
+            <xsl:call-template name="split">
+                <xsl:with-param name="text" select="substring-after($text, ':')" />
+            </xsl:call-template>            
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- ******* Function for roles ******* -->
+    <xsl:template name="roles">
+        <xsl:param name="ioSpecId" />
+        <xsl:variable name="v_ioSpecId" select="normalize-space($ioSpecId)" />
+        <xsl:choose>
+            <xsl:when test="string-length($v_ioSpecId)">
+	            <xsl:for-each select="//*">
+	                <xsl:if test="string(@id) = string($ioSpecId)">
+	                    <roles>
+	                        <xsl:for-each select="./bpmn2:dataInput">
+	                            <role>
+	                               <name>
+	                                   <xsl:value-of select="@name" />
+	                               </name>
+	                            </role>
+	                        </xsl:for-each>
+	                    </roles>
+	                </xsl:if>
+	            </xsl:for-each>        
+	        </xsl:when>
+	        <xsl:otherwise>
+	           <user />
+	        </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:template>
+    
 	<!-- ******* XSLT output formating: removing line breaks, bland output lines 
 		n something like that ******* -->
 	<xsl:template match="*/text()[normalize-space()]">

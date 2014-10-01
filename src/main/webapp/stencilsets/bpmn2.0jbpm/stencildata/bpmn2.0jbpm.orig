@@ -9241,6 +9241,17 @@
 					"refToView": ["text_name"],
 					"fill":true,
 					"stroke":false
+				},
+				{
+				    "id":"onEntryActionsOfEnd",
+                    "type":"ActionEnd",
+                    "title":"On Entry Actions Of End",
+                    "value":"",
+                    "description":"on entry actions of end",
+                    "description_ja":"アクション開始時",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script"
 				}
 				/**{
 					"id":"trigger",
