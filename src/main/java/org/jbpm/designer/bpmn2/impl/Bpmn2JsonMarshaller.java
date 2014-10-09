@@ -1477,10 +1477,11 @@ public class Bpmn2JsonMarshaller {
         properties.put("assignments", assignmentString);
         
         // on-entry and on-exit actions
+        // and more properties kaleo workflow for marshaller 
         if(task.getExtensionValues() != null && task.getExtensionValues().size() > 0) {
-            
-            String onEntryStr = "";
+        	String onEntryStr = "";
             String onExitStr = "";
+            
             for(ExtensionAttributeValue extattrval : task.getExtensionValues()) {
             
                 FeatureMap extensionElements = extattrval.getValue();
@@ -1496,16 +1497,59 @@ public class Bpmn2JsonMarshaller {
                 for(OnEntryScriptType onEntryScript : onEntryExtensions) {
                     onEntryStr += onEntryScript.getScript();
                     onEntryStr += "|";
-                
+                    
                     if(onEntryScript.getScriptFormat() != null) {
                         String format = onEntryScript.getScriptFormat();
                         String formatToWrite = "";
                         if(format.equals("http://www.java.com/java")) {
                             formatToWrite = "java";
+                            if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                        	properties.put("onentryactions", onEntryStr);
+                        	onEntryStr = "";
                         } else if(format.equals("http://www.mvel.org/2.0")) {
                             formatToWrite = "mvel";
-                        } else {
+                            if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                        	properties.put("onentryactions", onEntryStr);
+                        	onEntryStr = "";
+                        } else if (format.equals("action")) { // add property actions
+                        	formatToWrite = "java";
+                        	if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                        	properties.put("actions", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("notification")) { // add property notifications
+							formatToWrite = "java";
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							properties.put("notifications", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("role")) {
+							formatToWrite="java";
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							properties.put("roles", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("scriptedassignment")) {
+							formatToWrite="java";
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							properties.put("scriptedassignment", onEntryStr);
+                        	onEntryStr = "";
+						} else {
                             formatToWrite = "java";
+                            if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                        	properties.put("onentryactions", onEntryStr);
+                        	onEntryStr = "";
                         }
                         properties.put("script_language", formatToWrite);
                     }
@@ -1531,12 +1575,12 @@ public class Bpmn2JsonMarshaller {
                     }
                 }
             }
-            if(onEntryStr.length() > 0) {
-                if(onEntryStr.endsWith("|")) {
-                    onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
-                }
-                properties.put("onentryactions", onEntryStr);
-            }
+//            if(onEntryStr.length() > 0) {
+//                if(onEntryStr.endsWith("|")) {
+//                    onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+//                }
+//                properties.put("onentryactions", onEntryStr);
+//            }
             if(onExitStr.length() > 0) {
                 if(onExitStr.endsWith("|")) {
                     onExitStr = onExitStr.substring(0, onExitStr.length() - 1);
@@ -1580,18 +1624,83 @@ public class Bpmn2JsonMarshaller {
     }
     
     protected void marshallNode(FlowNode node, Map<String, Object> properties, String stencil, BPMNPlane plane, JsonGenerator generator, int xOffset, int yOffset) throws JsonGenerationException, IOException {
-    	if (properties == null) {
-    		properties = new LinkedHashMap<String, Object>();
-    	}
+//    	if (properties == null) {
+//    		properties = new LinkedHashMap<String, Object>();
+//    	}
+    	Map<String, Object> elementProperties = new LinkedHashMap<String, Object>(properties);
+    	
+    	if(node.getExtensionValues() != null && node.getExtensionValues().size() > 0) {
+        	String onEntryStr = "";
+        	
+            for(ExtensionAttributeValue extattrval : node.getExtensionValues()) {
+
+                FeatureMap extensionElements = extattrval.getValue();
+                
+                @SuppressWarnings("unchecked")
+                List<OnEntryScriptType> onEntryExtensions = (List<OnEntryScriptType>) extensionElements
+                                                     .get(DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, true);
+                
+                for(OnEntryScriptType onEntryScript : onEntryExtensions) {
+                    onEntryStr += onEntryScript.getScript();
+                    onEntryStr += "|";
+                    
+                    if(onEntryScript.getScriptFormat() != null) {
+                        String format = onEntryScript.getScriptFormat();
+                        
+                        if (format.equals("action")) {
+                        	if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                        	elementProperties.put("actions", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("notification")) {
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							elementProperties.put("notifications", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("role")) {
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							elementProperties.put("roles", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("scriptedassignment")) {
+							if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+							elementProperties.put("scriptedassignment", onEntryStr);
+                        	onEntryStr = "";
+						} else if (format.equals("beanshell")
+								|| format.equals("drl")
+								|| format.equals("groovy")
+								|| format.equals("javascript")
+								|| format.equals("python")
+								|| format.equals("ruby")) {
+							
+                            if(onEntryStr.endsWith("|")) {
+                                onEntryStr = onEntryStr.substring(0, onEntryStr.length() - 1);
+                            }
+                            elementProperties.put("script", onEntryStr);
+                            elementProperties.put("script_language", format);
+                        	onEntryStr = "";
+                        } else {
+                        	System.err.println("INFO: Error format type");
+                        }
+                    }
+                }
+            }
+        }
         if(node.getDocumentation() != null && node.getDocumentation().size() > 0) {
-            properties.put("documentation", node.getDocumentation().get(0).getText());
+        	elementProperties.put("documentation", node.getDocumentation().get(0).getText());
         }
         if(node.getName() != null) {
-        	properties.put("name", unescapeXML(node.getName()));
+        	elementProperties.put("name", unescapeXML(node.getName()));
         } else {
-        	properties.put("name", "");
+        	elementProperties.put("name", "");
         }
-        marshallProperties(properties, generator);
+
+        marshallProperties(elementProperties, generator);
         generator.writeObjectFieldStart("stencil");
         generator.writeObjectField("id", stencil);
         generator.writeEndObject();
@@ -1603,6 +1712,7 @@ public class Bpmn2JsonMarshaller {
         	generator.writeObjectField("resourceId", outgoing.getId());
         	generator.writeEndObject();
         }
+        
         // we need to also add associations as outgoing elements
         Process process = (Process) plane.getBpmnElement();
         for (Artifact artifact : process.getArtifacts()) {

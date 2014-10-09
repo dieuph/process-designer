@@ -69,7 +69,7 @@ public class JbpmProfileImpl implements IDiagramProfile {
     }
 
     public String getTitle() {
-        return "jBPM Process Designer";
+        return "Process Designer";
     }
 
     public String getStencilSet() {

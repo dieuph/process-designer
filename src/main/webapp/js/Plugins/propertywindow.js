@@ -84,7 +84,8 @@ ORYX.Plugins.PropertyWindow = {
 				width: 90,
 				sortable: true,
 				renderer: this.tooltipRenderer.bind(this)
-			}, {
+			},
+			{
 				//id: 'value',
 				header: ORYX.I18N.PropertyWindow.value,
 				dataIndex: 'value',
@@ -96,7 +97,7 @@ ORYX.Plugins.PropertyWindow = {
 				renderer: this.renderer.bind(this)
 			},
 			{
-				header: "Pop",
+				header: 'Pop',
 				dataIndex: 'popular',
 				hidden: true,
 				sortable: true
@@ -140,15 +141,15 @@ ORYX.Plugins.PropertyWindow = {
 			colModel: this.columnModel,
 			enableHdMenu: false,
 			view: new Ext.grid.GroupingView({
-				forceFit: true,
+				forceFit: false,
 				groupTextTpl: '{[values.rs.first().data.popular ? ORYX.I18N.PropertyWindow.oftenUsed : ORYX.I18N.PropertyWindow.moreProps]}'
+//				groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
 			}),
-			
 			// the data store
 			store: this.dataSource
 			
 		});
-
+		
 		region = this.facade.addToRegion('east', new Ext.Panel({
 			width: 220,
 			layout: "fit",
@@ -734,8 +735,44 @@ ORYX.Plugins.PropertyWindow = {
 							editorGrid = new Ext.Editor(cf);
 							break;
 						
-						case ORYX.CONFIG.TYPE_ACTION_END:
-							var cf = new Ext.form.ComplexActionsEndField({
+						case ORYX.CONFIG.TYPE_ACTIONS:
+							var cf = new Ext.form.Actions({
+								allowBlank: pair.optional(),
+								dataSource:this.dataSource,
+								grid:this.grid,
+								row:index,
+								facade:this.facade
+							});
+							cf.on('dialogClosed', this.dialogClosed, {scope:this, row:index, col:1,field:cf});							
+							editorGrid = new Ext.Editor(cf);
+							break;
+						
+						case ORYX.CONFIG.TYPE_NOTIFICATIONS:
+							var cf = new Ext.form.Notifications({
+								allowBlank: pair.optional(),
+								dataSource:this.dataSource,
+								grid:this.grid,
+								row:index,
+								facade:this.facade
+							});
+							cf.on('dialogClosed', this.dialogClosed, {scope:this, row:index, col:1,field:cf});							
+							editorGrid = new Ext.Editor(cf);
+							break;	
+						
+						case ORYX.CONFIG.TYPE_ROLES:
+							var cf = new Ext.form.Roles({
+								allowBlank: pair.optional(),
+								dataSource:this.dataSource,
+								grid:this.grid,
+								row:index,
+								facade:this.facade
+							});
+							cf.on('dialogClosed', this.dialogClosed, {scope:this, row:index, col:1,field:cf});							
+							editorGrid = new Ext.Editor(cf);
+							break;	
+						
+						case ORYX.CONFIG.TYPE_SCRIPTED_ASSIGNMENT:
+							var cf = new Ext.form.ScriptedAssignment({
 								allowBlank: pair.optional(),
 								dataSource:this.dataSource,
 								grid:this.grid,
@@ -876,9 +913,7 @@ ORYX.Plugins.PropertyWindow = {
 						// Popular Properties are those with a refToView set or those which are set to be popular
 						if (pair.refToView()[0] || refToViewFlag || pair.popular()) {
 							pair.setPopular();
-						} 
-						
-						
+						}
 						if(pair.popular()) {
 							this.popularProperties.push([pair.popular(), name, attribute, icons, {
 								editor: editorGrid,
@@ -888,8 +923,7 @@ ORYX.Plugins.PropertyWindow = {
 								renderer: editorRenderer,
 								labelProvider: this.getLabelProvider(pair)
 							}]);
-						}
-						else {					
+						} else {					
 							this.properties.push([pair.popular(), name, attribute, icons, {
 								editor: editorGrid,
 								propId: key,
@@ -1684,14 +1718,6 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
     	
     	var ActionDef = Ext.data.Record.create([{
             name: 'action'
-        },{
-        	name: 'template'
-        },{
-        	name: 'template_language'
-        },{
-        	name: 'notification_type'
-        },{
-        	name: 'description'
         }]);
     	
     	var actionsProxy = new Ext.data.MemoryProxy({
@@ -1712,74 +1738,16 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
     	actions.load();
     	
     	if(this.value.length > 0) {
-    		var valueParts = this.value.split("`");
+    		var valueParts = this.value.split("|");
     		for(var i=0; i < valueParts.length; i++) {
     			var nextPart = valueParts[i];
-    			if(nextPart.indexOf(":") > 0) {
-    				var innerParts = nextPart.split(":");
-    				if((innerParts[2] == 'freemarker' || innerParts[2] == 'text' || innerParts[2] == 'velocity') && 
-    				   (innerParts[3] == 'email' || innerParts[3] == 'im' || innerParts[3] == 'private-message' || innerParts[3] == 'user-notification')) {
-    					actions.add(new ActionDef({
-        					action: innerParts[0],
-        					template: innerParts[1],
-        					template_language: innerParts[2],
-                            notification_type: innerParts[3],
-                            description: innerParts[4]
-        				}));
-    				} else {
-    					actions.add(new ActionDef({
-        					action: innerParts[0],
-        					template: innerParts[1],
-        					template_language: '',
-                            notification_type: '',
-                            description: innerParts[4]
-        				}));
-    				}
-    			} else {
-    				actions.add(new ActionDef({
-                        action: nextPart,
-                        template: '',
-                        template_language: '',
-                        notification_type: '',
-                        description: ''
-                    }));
-    			}
+    			actions.add(new ActionDef({
+                    action: nextPart
+                }));
     		}
     	}
     	
     	var itemDeleter = new Extensive.grid.ItemDeleter();
-    	
-    	var temLanguageData = new Array();
-    	var freemarkerType = new Array();
-    	freemarkerType.push("freemarker");
-    	freemarkerType.push("freemarker");
-    	temLanguageData.push(freemarkerType);
-    	var textType = new Array();
-    	textType.push("text");
-    	textType.push("text");
-    	temLanguageData.push(textType);
-    	var velocityType = new Array();
-    	velocityType.push("velocity");
-    	velocityType.push("velocity");
-    	temLanguageData.push(velocityType);
-    	
-    	var notiTypeData = new Array();
-    	var emailType= new Array();
-    	emailType.push("email");
-    	emailType.push("email");
-    	notiTypeData.push(emailType);
-    	var imType = new Array();
-    	imType.push("im");
-    	imType.push("im");
-    	notiTypeData.push(imType);
-    	var privateMesType = new Array();
-    	privateMesType.push("private-message");
-    	privateMesType.push("private-message");
-    	notiTypeData.push(privateMesType);
-    	var userNotiType = new Array();
-    	userNotiType.push("user-notification");
-    	userNotiType.push("user-notification");
-    	notiTypeData.push(userNotiType);
     	
     	var gridId = Ext.id();
     	var grid = new Ext.grid.EditorGridPanel({
@@ -1789,62 +1757,8 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
             cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
             	id: 'action',
                 header: 'Action',
-                width: 100,
+                width: 360,
                 dataIndex: 'action',
-                editor: new Ext.form.TextField({ allowBlank: false })
-            },{
-            	id: 'template',
-            	header: 'Template',
-            	width: 150,
-            	dataIndex: 'template',
-            	editor: new Ext.form.TextField({ allowBlank: false })
-            },{
-            	id: 'template_language',
-            	header: 'Template Language',
-            	width: 130,
-            	dataIndex: 'template_language',
-            	editor: new Ext.form.ComboBox({
-            		id: 'temLanguageCombo',
-                	valueField:'name',
-                	displayField:'value',
-                	typeAhead: false,
-                	mode: 'local',
-					triggerAction: 'all',
-					selectOnFocus:true,
-					store: new Ext.data.SimpleStore({
-				        fields: [
-				                  'name',
-				                  'value'
-				                ],
-				        data: temLanguageData
-				    })
-            	})
-            },{
-            	id: 'notification_type',
-            	header: 'Notification Type',
-            	width: 100,
-            	dataIndex: 'notification_type',
-            	editor: new Ext.form.ComboBox({
-            		id: 'notiTypeCombo',
-                	valueField:'name',
-                	displayField:'value',
-                	typeAhead: false,
-                	mode: 'local',
-					triggerAction: 'all',
-					selectOnFocus:true,
-					store: new Ext.data.SimpleStore({
-				        fields: [
-				            'name',
-				            'value'
-				        ],
-				        data: notiTypeData
-					})
-            	})
-            },{
-            	id: 'description',
-                header: 'Description',
-                width: 180,
-                dataIndex: 'description',
                 editor: new Ext.form.TextField({ allowBlank: false })
             },itemDeleter]),
     		selModel: itemDeleter,
@@ -1853,11 +1767,7 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
                 text: 'Add Action',
                 handler : function(){
                 	actions.add(new ActionDef({
-                        action: '',
-                        template: '',
-                        template_language: '',
-                        notification_type: '',
-                        description: ''
+                        action: ''
                     }));
                     grid.fireEvent('cellclick', grid, actions.getCount()-1, 1, null);
                 }
@@ -1869,8 +1779,8 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
 			layout		: 'anchor',
 			autoCreate	: true, 
 			title		: 'Editor for Actions', 
-			height		: 350, 
-			width		: 750, 
+			height		: 300, 
+			width		: 450, 
 			modal		: true,
 			collapsible	: false,
 			fixedcenter	: true, 
@@ -1900,15 +1810,7 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
                 	grid.stopEditing();
                 	actions.data.each(function() {
                 		if(this.data['action'].length > 0) {
-                			if(this.data['template'].length > 0 && this.data['template_language'].length > 0 && this.data['notification_type'].length > 0) {
-                				if(this.data['description'].length > 0) {
-                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ":" + this.data['description'] + "`";	
-                				} else {
-                					outValue += this.data['action'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + "`";
-                				}
-                			} else {
-                				outValue += this.data['action'] + "`";
-                			}
+                			outValue += this.data['action'] + "|";
                 		}
                     });
                 	if(outValue.length > 0) {
@@ -1934,10 +1836,11 @@ Ext.form.ComplexActionsField = Ext.extend(Ext.form.TriggerField,  {
 
 		this.grid.stopEditing();
 		grid.focus( false, 100 );
+    	
     }
 });
 
-Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
+Ext.form.Actions = Ext.extend(Ext.form.TriggerField,  {
 	/**
      * If the trigger was clicked a dialog has to be opened
      * to enter the values for the complex property.
@@ -1947,12 +1850,18 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
             return;
         }
     	
-    	var ActionDef = Ext.data.Record.create([{
-            name: 'action'
+    	var ActionsDef = Ext.data.Record.create([{
+            name: 'name'
         },{
         	name: 'script'
         },{
         	name: 'script_language'
+        },{
+        	name: 'execution_type'
+        },{
+        	name: 'priority'
+        },{
+        	name: 'description'
         }]);
     	
     	var actionsProxy = new Ext.data.MemoryProxy({
@@ -1963,10 +1872,10 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
     		autoDestroy: true,
             reader: new Ext.data.JsonReader({
                 root: "root"
-            }, ActionDef),
+            }, ActionsDef),
             proxy: actionsProxy,
             sorters: [{
-                property: 'action',
+                property: 'name',
                 direction:'ASC'
             }]
         });
@@ -1978,25 +1887,61 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
     			var nextPart = valueParts[i];
     			if(nextPart.indexOf(":") > 0) {
     				var innerParts = nextPart.split(":");
-    				if(innerParts[2] == "beanshell" || innerParts[2] == "drl" || innerParts[2] == "groovy" || innerParts[2] == "javascript" || innerParts[2] == "python" || innerParts[2] == "ruby") {
-        				actions.add(new ActionDef({
-            				action: innerParts[0],
-            				script: innerParts[1],
-            				script_language: innerParts[2]
-        				}));
+    				if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3] && innerParts[4] && innerParts[5]) {
+    					actions.add(new ActionsDef({
+                			name: innerParts[0],
+                			script: innerParts[1],
+                			script_language: innerParts[2],
+                			execution_type: innerParts[3],
+                			priority: innerParts[4],
+                			description: innerParts[5]
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3] && innerParts[4]) {
+    					actions.add(new ActionsDef({
+                			name: innerParts[0],
+                			script: innerParts[1],
+                			script_language: innerParts[2],
+                			execution_type: innerParts[3],
+                			priority: innerParts[4],
+                			description: ''
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3]) {
+    					actions.add(new ActionsDef({
+                			name: innerParts[0],
+                			script: innerParts[1],
+                			script_language: innerParts[2],
+                			execution_type: innerParts[3],
+                			priority: '',
+                			description: ''
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2]) {
+    					actions.add(new ActionsDef({
+                			name: innerParts[0],
+                			script: innerParts[1],
+                			script_language: innerParts[2],
+                			execution_type: '',
+                			priority: '',
+                			description: ''
+            			}));
     				} else {
-    					actions.add(new ActionDef({
-            				action: innerParts[0],
-            				script: innerParts[1],
-            				script_language: ''
-        				}));
+    					actions.add(new ActionsDef({
+                			name: innerParts[0],
+                			script: innerParts[1],
+                			script_language: '',
+                			execution_type: '',
+                			priority: '',
+                			description: ''
+            			}));
     				}
     			} else {
-    				actions.add(new ActionDef({
-                        action: nextPart,
-                        script: '',
-                        script_language: ''
-                    }));
+    				actions.add(new ActionsDef({
+            			name: nextPart,
+            			script: '',
+            			script_language: '',
+            			execution_type: '',
+            			priority: '',
+            			description: ''
+        			}));
     			}
     		}
     	}
@@ -2029,26 +1974,41 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
     	ruby.push("ruby");
     	scriptLanguageData.push(ruby);
     	
+    	var executionTypeData = new Array();
+    	var onAssignment = new Array();
+    	onAssignment.push("onAssignment");
+    	onAssignment.push("onAssignment");
+    	executionTypeData.push(onAssignment);
+    	var onEntry = new Array();
+    	onEntry.push("onEntry");
+    	onEntry.push("onEntry");
+    	executionTypeData.push(onEntry);
+    	var onExit = new Array();
+    	onExit.push("onExit");
+    	onExit.push("onExit");
+    	executionTypeData.push(onExit);
+    	
     	var gridId = Ext.id();
     	var grid = new Ext.grid.EditorGridPanel({
             store: actions,
             id: gridId,
             stripeRows: true,
             cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
-            	id: 'action',
-                header: 'Action',
+            	id: 'name',
+                header: 'Name',
                 width: 100,
-                dataIndex: 'action',
+                dataIndex: 'name',
                 editor: new Ext.form.TextField({ allowBlank: false })
             },{
             	id: 'script',
             	header: 'Script',
-            	width: 400,
+            	width: 200,
             	dataIndex: 'script',
             	editor: new Ext.form.TextArea({
                     id: Ext.id(),
                     value: this.value,
-                    autoScroll: true
+                    autoScroll: true,
+                    height: 300
                 })
             },{
             	id: 'script_language',
@@ -2071,16 +2031,52 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
 				        data: scriptLanguageData
 					})
             	})
+            },{
+            	id: 'execution_type',
+                header: 'Execution Type',
+                width: 100,
+                dataIndex: 'execution_type',
+                editor: new Ext.form.ComboBox({
+            		id: 'executionTypeCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: executionTypeData
+					})
+            	})
+            },{
+            	id: 'priority',
+                header: 'Priority',
+                width: 80,
+                dataIndex: 'priority',
+                editor: new Ext.form.NumberField({ allowBlank: false })
+            },{
+            	id: 'description',
+                header: 'Description',
+                width: 100,
+                dataIndex: 'description',
+                editor: new Ext.form.TextField({ allowBlank: true })
             },itemDeleter]),
     		selModel: itemDeleter,
             autoHeight: true,
             tbar: [{
                 text: 'Add Action',
                 handler : function(){
-                	actions.add(new ActionDef({
-                        action: '',
+                	actions.add(new ActionsDef({
+                        name: '',
                         script: '',
-                        script_language: ''
+                        script_language: '',
+                        execution_type: '',
+                        priority: '',
+                        description: ''
                     }));
                     grid.fireEvent('cellclick', grid, actions.getCount()-1, 1, null);
                 }
@@ -2093,7 +2089,342 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
 			autoCreate	: true, 
 			title		: 'Editor for Actions', 
 			height		: 350,
-			width		: 750, 
+			width		: 800, 
+			modal		: true,
+			collapsible	: false,
+			fixedcenter	: true, 
+			shadow		: true, 
+			resizable   : true,
+			proxyDrag	: true,
+			autoScroll  : true,
+			keys:[{
+				key	: 27,
+				fn	: function(){
+						dialog.hide()
+				}.bind(this)
+			}],
+			items		:[grid],
+			listeners	:{
+				hide: function(){
+					this.fireEvent('dialogClosed', this.value);
+					//this.focus.defer(10, this);
+					dialog.destroy();
+				}.bind(this)				
+			},
+			buttons		: [{
+                text: ORYX.I18N.PropertyWindow.ok,
+                handler: function(){	 
+                	var outValue = "";
+                	grid.stopEditing();
+                	grid.getView().refresh();
+                	actions.data.each(function() {
+                		if(this.data['name'].length > 0) {
+                			if(this.data['script'].length > 0 && this.data['script_language'].length > 0 && this.data['execution_type'].length > 0 && this.data['priority'] >= 0 && this.data['description'].length > 0) {
+                				outValue += this.data['name'] + ":" + this.data['script'] + ":" + this.data['script_language'] + ":" + this.data['execution_type'] + ":" + this.data['priority'] + ":" + this.data['description'] + "`";
+                			} else if(this.data['script'].length > 0 && this.data['script_language'].length > 0 && this.data['execution_type'].length > 0 && this.data['priority'] >= 0) {
+                				outValue += this.data['name'] + ":" + this.data['script'] + ":" + this.data['script_language'] + ":" + this.data['execution_type'] + ":" + this.data['priority'] + "`";
+                			} else {
+                				outValue += this.data['name'] + "`";
+                			}
+                		}
+                    });
+                	if(outValue.length > 0) {
+                		outValue = outValue.slice(0, -1)
+                	}
+					this.setValue(outValue);
+					this.dataSource.getAt(this.row).set('value', outValue)
+					this.dataSource.commitChanges()
+
+					dialog.hide()
+                }.bind(this)
+            }, {
+                text: ORYX.I18N.PropertyWindow.cancel,
+                handler: function(){
+					this.setValue(this.value);
+                	dialog.hide()
+                }.bind(this)
+            }]
+		});		
+				
+		dialog.show();		
+		grid.render();
+
+		this.grid.stopEditing();
+		grid.focus( false, 100 );
+    	
+    }
+});
+
+Ext.form.Notifications = Ext.extend(Ext.form.TriggerField,  {
+	/**
+     * If the trigger was clicked a dialog has to be opened
+     * to enter the values for the complex property.
+     */
+    onTriggerClick : function() {
+    	if(this.disabled){
+            return;
+        }
+    	
+    	var NotificationDef = Ext.data.Record.create([{
+            name: 'name'
+        },{
+        	name: 'template'
+        },{
+        	name: 'template_language'
+        },{
+        	name: 'notification_type'
+        },{
+        	name: 'execution_type'
+        },{
+        	name: 'description'
+        }]);
+    	
+    	var notificationsProxy = new Ext.data.MemoryProxy({
+            root: []
+        });
+    	
+    	var notifications = new Ext.data.Store({
+    		autoDestroy: true,
+            reader: new Ext.data.JsonReader({
+                root: "root"
+            }, NotificationDef),
+            proxy: notificationsProxy,
+            sorters: [{
+                property: 'name',
+                direction:'ASC'
+            }]
+        });
+    	notifications.load();
+    	
+    	if(this.value.length > 0) {
+    		var valueParts = this.value.split("`");
+    		for(var i=0; i < valueParts.length; i++) {
+    			var nextPart = valueParts[i];
+    			if(nextPart.indexOf(":") > 0) {
+    				var innerParts = nextPart.split(":");
+    				if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3] && innerParts[4] && innerParts[5]) {
+    					notifications.add(new NotificationDef({
+                			name: innerParts[0],
+                			template: innerParts[1],
+                			template_language: innerParts[2],
+                			notification_type: innerParts[3],
+                			execution_type: innerParts[4],
+                			description: innerParts[5]
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3] && innerParts[4]) {
+    					notifications.add(new NotificationDef({
+                			name: innerParts[0],
+                			template: innerParts[1],
+                			template_language: innerParts[2],
+                			notification_type: innerParts[3],
+                			execution_type: innerParts[4],
+                			description: ''
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2] && innerParts[3]) {
+    					notifications.add(new NotificationDef({
+                			name: innerParts[0],
+                			template: innerParts[1],
+                			template_language: innerParts[2],
+                			notification_type: innerParts[3],
+                			execution_type: '',
+                			description: ''
+            			}));
+    				} else if(innerParts[0] && innerParts[1] && innerParts[2]) {
+    					notifications.add(new NotificationDef({
+                			name: innerParts[0],
+                			template: innerParts[1],
+                			template_language: innerParts[2],
+                			notification_type: '',
+                			execution_type: '',
+                			description: ''
+            			}));
+    				} else {
+    					notifications.add(new NotificationDef({
+                			name: innerParts[0],
+                			template: innerParts[1],
+                			template_language: '',
+                			notification_type: '',
+                			execution_type: '',
+                			description: ''
+            			}));
+    				}
+    			} else {
+    				notifications.add(new NotificationDef({
+                		name: nextPart,
+                		template: '',
+               			template_language: '',
+               			notification_type: '',
+               			execution_type: '',
+               			description: ''
+           			}));
+    			}
+    		}
+    	}
+    	
+    	var itemDeleter = new Extensive.grid.ItemDeleter();
+    	
+    	var templateLanguageData = new Array();
+    	var freemarker = new Array();
+    	freemarker.push("freemarker");
+    	freemarker.push("freemarker");
+    	templateLanguageData.push(freemarker);
+    	var text = new Array();
+    	text.push("text");
+    	text.push("text");
+    	templateLanguageData.push(text);
+    	var velocity = new Array();
+    	velocity.push("velocity");
+    	velocity.push("velocity");
+    	templateLanguageData.push(velocity);
+    	
+    	var notificationTypeData = new Array();
+    	var email = new Array();
+    	email.push("email");
+    	email.push("email");
+    	notificationTypeData.push(email);
+    	var im = new Array();
+    	im.push("im");
+    	im.push("instant-messenger");
+    	notificationTypeData.push(im);
+    	var privateMessage = new Array();
+    	privateMessage.push("private-message");
+    	privateMessage.push("private-message");
+    	notificationTypeData.push(privateMessage);
+    	var userNotification = new Array();
+    	userNotification.push("user-notification");
+    	userNotification.push("user-notification");
+    	notificationTypeData.push(userNotification);
+    	
+    	var executionTypeData = new Array();
+    	var onAssignment = new Array();
+    	onAssignment.push("onAssignment");
+    	onAssignment.push("onAssignment");
+    	executionTypeData.push(onAssignment);
+    	var onEntry = new Array();
+    	onEntry.push("onEntry");
+    	onEntry.push("onEntry");
+    	executionTypeData.push(onEntry);
+    	var onExit = new Array();
+    	onExit.push("onExit");
+    	onExit.push("onExit");
+    	executionTypeData.push(onExit);
+    	
+    	var gridId = Ext.id();
+    	var grid = new Ext.grid.EditorGridPanel({
+            store: notifications,
+            id: gridId,
+            stripeRows: true,
+            cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
+            	id: 'name',
+                header: 'Name',
+                width: 100,
+                dataIndex: 'name',
+                editor: new Ext.form.TextField({ allowBlank: false })
+            },{
+            	id: 'template',
+            	header: 'Template',
+            	width: 180,
+            	dataIndex: 'template',
+            	editor: new Ext.form.TextArea({
+                    id: Ext.id(),
+                    value: this.value,
+                    autoScroll: true
+                })
+            },{
+            	id: 'template_language',
+            	header: 'Template Language',
+            	width: 120,
+            	dataIndex: 'template_language',
+            	editor: new Ext.form.ComboBox({
+            		id: 'templateLanguageCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: templateLanguageData
+					})
+            	})
+            },{
+            	id: 'notification_type',
+                header: 'Notification Type',
+                width: 120,
+                dataIndex: 'notification_type',
+                editor: new Ext.form.ComboBox({
+            		id: 'notificationTypeCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: notificationTypeData
+					})
+            	})
+            },{
+            	id: 'execution_type',
+                header: 'Execution Type',
+                width: 100,
+                dataIndex: 'execution_type',
+                editor: new Ext.form.ComboBox({
+            		id: 'executionTypeCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: executionTypeData
+					})
+            	})
+            },{
+            	id: 'description',
+                header: 'Description',
+                width: 100,
+                dataIndex: 'description',
+                editor: new Ext.form.TextField({ allowBlank: true })
+            },itemDeleter]),
+    		selModel: itemDeleter,
+            autoHeight: true,
+            tbar: [{
+                text: 'Add Notification',
+                handler : function(){
+                	notifications.add(new NotificationDef({
+                		name: '',
+                		template: '',
+                		template_language: '',
+                		notification_type: '',
+                		execution_type: '',
+                		description: ''
+                    }));
+                    grid.fireEvent('cellclick', grid, notifications.getCount()-1, 1, null);
+                }
+            }],
+            clicksToEdit: 1
+        });
+    	
+    	var dialog = new Ext.Window({ 
+			layout		: 'anchor',
+			autoCreate	: true, 
+			title		: 'Editor for Notifications', 
+			height		: 350,
+			width		: 800, 
 			modal		: true,
 			collapsible	: false,
 			fixedcenter	: true, 
@@ -2121,12 +2452,399 @@ Ext.form.ComplexActionsEndField = Ext.extend(Ext.form.TriggerField,  {
                 	var outValue = "";
                 	grid.getView().refresh();
                 	grid.stopEditing();
-                	actions.data.each(function() {
-                		if(this.data['action'].length > 0) {
-                			if(this.data['script'].length > 0 && this.data['script_language'].length > 0) {
-                				outValue += this.data['action'] + ":" + this.data['script'] + ":" + this.data['script_language'] + "`";
+                	notifications.data.each(function() {
+                		if(this.data['name'].length > 0) {
+                			if(this.data['template'].length > 0 && this.data['template_language'].length > 0 && this.data['notification_type'].length > 0 && this.data['execution_type'].length > 0 && this.data['description'].length > 0) {
+                				outValue += this.data['name'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ":" + this.data['execution_type'] + ":" + this.data['description'] + "`";
+                			} else if(this.data['template'].length > 0 && this.data['template_language'].length > 0 && this.data['notification_type'].length > 0 && this.data['execution_type'].length > 0) {
+                				outValue += this.data['name'] + ":" + this.data['template'] + ":" + this.data['template_language'] + ":" + this.data['notification_type'] + ":" + this.data['execution_type'] + "`";
                 			} else {
-                				outValue += this.data['action'] + "`";
+                				outValue += this.data['name'] + "`";
+                			}
+                		}
+                    });
+                	if(outValue.length > 0) {
+                		outValue = outValue.slice(0, -1)
+                	}
+					this.setValue(outValue);
+					this.dataSource.getAt(this.row).set('value', outValue)
+					this.dataSource.commitChanges()
+
+					dialog.hide()
+                }.bind(this)
+            }, {
+                text: ORYX.I18N.PropertyWindow.cancel,
+                handler: function(){
+					this.setValue(this.value);
+                	dialog.hide()
+                }.bind(this)
+            }]
+		});		
+				
+		dialog.show();		
+		grid.render();
+
+		this.grid.stopEditing();
+		grid.focus( false, 100 );
+    	
+    }
+});
+
+Ext.form.Roles = Ext.extend(Ext.form.TriggerField,  {
+	/**
+     * If the trigger was clicked a dialog has to be opened
+     * to enter the values for the complex property.
+     */
+    onTriggerClick : function() {
+    	if(this.disabled){
+            return;
+        }
+
+    	var RoleDef = Ext.data.Record.create([{
+            name: 'role_type'
+        },{
+        	name: 'role_name'
+        }]);
+    	
+    	var rolesProxy = new Ext.data.MemoryProxy({
+            root: []
+        });
+    	
+    	var roles = new Ext.data.Store({
+    		autoDestroy: true,
+            reader: new Ext.data.JsonReader({
+                root: "root"
+            }, RoleDef),
+            proxy: rolesProxy,
+            sorters: [{
+                property: 'role_type',
+                direction:'ASC'
+            }]
+        });
+    	roles.load();
+    	
+    	if(this.value.length > 0) {
+    		var valueParts = this.value.split("`");
+    		for(var i=0; i < valueParts.length; i++) {
+    			var nextPart = valueParts[i];
+    			if(nextPart.indexOf(":") > 0) {
+    				var innerParts = nextPart.split(":");
+    				roles.add(new RoleDef({
+                        role_type: innerParts[0],
+                        role_name: innerParts[1]
+                    }));
+    			} else {
+    				roles.add(new RoleDef({
+                        role_type: nextPart,
+                        role_name: ''
+                    }));
+    			}
+    		}
+    	}
+    	
+    	var itemDeleter = new Extensive.grid.ItemDeleter();
+    	var roleTypeData = new Array();
+    	var siteType = new Array();
+    	siteType.push("site");
+    	siteType.push("Site");
+    	roleTypeData.push(siteType);
+    	var regularType = new Array();
+    	regularType.push("regular");
+    	regularType.push("Regular");
+    	roleTypeData.push(regularType);
+    	var organizationType = new Array();
+    	organizationType.push("organization");
+    	organizationType.push("Organization");
+    	roleTypeData.push(organizationType);
+
+    	var gridId = Ext.id();
+    	var grid = new Ext.grid.EditorGridPanel({
+            store: roles,
+            id: gridId,
+            stripeRows: true,
+            cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
+            	id: 'role_type',
+                header: 'Role Type',
+                width: 160,
+                dataIndex: 'role_type',
+                editor: new Ext.form.ComboBox({
+            		id: 'roleTypeCombo',
+                	valueField:'name',
+                	displayField:'value',
+                	typeAhead: false,
+                	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: roleTypeData
+					})
+            	})
+            },{
+            	id: 'role_name',
+                header: 'Role Name',
+                width: 160,
+                dataIndex: 'role_name',
+                editor: new Ext.form.TextField({ allowBlank: false })
+            },itemDeleter]),
+    		selModel: itemDeleter,
+            autoHeight: true,
+            tbar: [{
+                text: 'Add Role',
+                handler : function(){
+                	roles.add(new RoleDef({
+                        role_type: '',
+                        role_name: ''
+                    }));
+                    grid.fireEvent('cellclick', grid, roles.getCount()-1, 1, null);
+                }
+            }],
+            clicksToEdit: 1
+        });
+    	
+    	var dialog = new Ext.Window({ 
+			layout		: 'anchor',
+			autoCreate	: true, 
+			title		: 'Editor for Roles', 
+			height		: 300, 
+			width		: 450, 
+			modal		: true,
+			collapsible	: false,
+			fixedcenter	: true, 
+			shadow		: true, 
+			resizable   : true,
+			proxyDrag	: true,
+			autoScroll  : true,
+			keys:[{
+				key	: 27,
+				fn	: function(){
+						dialog.hide()
+				}.bind(this)
+			}],
+			items		:[grid],
+			listeners	:{
+				hide: function(){
+					this.fireEvent('dialogClosed', this.value);
+					//this.focus.defer(10, this);
+					dialog.destroy();
+				}.bind(this)				
+			},
+			buttons		: [{
+                text: ORYX.I18N.PropertyWindow.ok,
+                handler: function(){	 
+                	var outValue = "";
+                	grid.getView().refresh();
+                	grid.stopEditing();
+                	roles.data.each(function() {
+                		if(this.data['role_type'].length > 0) {
+                			if(this.data['role_name'].length > 0) {
+                				outValue += this.data['role_type'] + ":" + this.data['role_name'] + "`";
+                			} else {
+                				outValue += this.data['role_type'] + "`";
+                			}
+                		}
+                    });
+                	if(outValue.length > 0) {
+                		outValue = outValue.slice(0, -1)
+                	}
+					this.setValue(outValue);
+					this.dataSource.getAt(this.row).set('value', outValue)
+					this.dataSource.commitChanges()
+
+					dialog.hide()
+                }.bind(this)
+            }, {
+                text: ORYX.I18N.PropertyWindow.cancel,
+                handler: function(){
+					this.setValue(this.value);
+                	dialog.hide()
+                }.bind(this)
+            }]
+		});		
+				
+		dialog.show();		
+		grid.render();
+
+		this.grid.stopEditing();
+		grid.focus( false, 100 );
+    	
+    }
+});
+
+Ext.form.ScriptedAssignment = Ext.extend(Ext.form.TriggerField,  {
+	/**
+     * If the trigger was clicked a dialog has to be opened
+     * to enter the values for the complex property.
+     */
+    onTriggerClick : function() {
+    	if(this.disabled){
+            return;
+        }
+    	
+    	var ScriptedAssignmentDef = Ext.data.Record.create([{
+            name: 'script'
+        },{
+        	name: 'script_language'
+        }]);
+    	
+    	var scriptedAssignmentProxy = new Ext.data.MemoryProxy({
+            root: []
+        });
+    	
+    	var scriptedAssignment = new Ext.data.Store({
+    		autoDestroy: true,
+            reader: new Ext.data.JsonReader({
+                root: "root"
+            }, ScriptedAssignmentDef),
+            proxy: scriptedAssignmentProxy,
+            sorters: [{
+                property: 'script_language',
+                direction:'ASC'
+            }]
+        });
+    	scriptedAssignment.load();
+    	
+    	if(this.value.length > 0) {
+    		var valueParts = this.value.split("`");
+    		for(var i=0; i < valueParts.length; i++) {
+    			var nextPart = valueParts[i];
+    			if(nextPart.indexOf(":") > 0) {
+    				var innerParts = nextPart.split(":");
+    				scriptedAssignment.add(new ScriptedAssignmentDef({
+    					script: innerParts[0],
+    					script_language: innerParts[1]
+                    }));
+    			} else {
+    				scriptedAssignment.add(new ScriptedAssignmentDef({
+    					script: nextPart,
+    					script_language: ''
+                    }));
+    			}
+    		}
+    	}
+    	
+    	var itemDeleter = new Extensive.grid.ItemDeleter();
+    	var scriptLanguageData = new Array();
+    	var beanshell = new Array();
+    	beanshell.push("beanshell");
+    	beanshell.push("beanshell");
+    	scriptLanguageData.push(beanshell);
+    	var drl = new Array();
+    	drl.push("drl");
+    	drl.push("drl");
+    	scriptLanguageData.push(drl);
+    	var groovy = new Array();
+    	groovy.push("groovy");
+    	groovy.push("groovy");
+    	scriptLanguageData.push(groovy);
+    	var javascript = new Array();
+    	javascript.push("javascript");
+    	javascript.push("javascript");
+    	scriptLanguageData.push(javascript);
+    	var python = new Array();
+    	python.push("python");
+    	python.push("python");
+    	scriptLanguageData.push(python);
+    	var ruby = new Array();
+    	ruby.push("ruby");
+    	ruby.push("ruby");
+    	scriptLanguageData.push(ruby);
+
+    	var gridId = Ext.id();
+    	var grid = new Ext.grid.EditorGridPanel({
+            store: scriptedAssignment,
+            id: gridId,
+            stripeRows: true,
+            cm: new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), {
+            	id: 'script',
+                header: 'Script',
+                width: 200,
+                dataIndex: 'script',
+                editor: new Ext.form.TextArea({
+                    id: Ext.id(),
+                    value: this.value,
+                    autoScroll: true,
+                    height: 300
+                })
+            },{
+            	id: 'script_language',
+                header: 'Script Language',
+                width: 120,
+                dataIndex: 'script_language',
+	            editor: new Ext.form.ComboBox({
+	        		id: 'scriptLanguageCombo',
+	            	valueField:'name',
+	            	displayField:'value',
+	            	typeAhead: false,
+	            	mode: 'local',
+					triggerAction: 'all',
+					selectOnFocus:true,
+					store: new Ext.data.SimpleStore({
+				        fields: [
+				            'name',
+				            'value'
+				        ],
+				        data: scriptLanguageData
+					})
+	        	})
+            },itemDeleter]),
+    		selModel: itemDeleter,
+            autoHeight: true,
+            tbar: [{
+                text: 'Add Scripted Assignment',
+                handler : function(){
+                	scriptedAssignment.add(new ScriptedAssignmentDef({
+                        script: '',
+                        script_language: ''
+                    }));
+                    grid.fireEvent('cellclick', grid, scriptedAssignment.getCount()-1, 1, null);
+                }
+            }],
+            clicksToEdit: 1
+        });
+    	
+    	var dialog = new Ext.Window({ 
+			layout		: 'anchor',
+			autoCreate	: true, 
+			title		: 'Editor for Scripted Assignment', 
+			height		: 300, 
+			width		: 450, 
+			modal		: true,
+			collapsible	: false,
+			fixedcenter	: true, 
+			shadow		: true, 
+			resizable   : true,
+			proxyDrag	: true,
+			autoScroll  : true,
+			keys:[{
+				key	: 27,
+				fn	: function(){
+						dialog.hide()
+				}.bind(this)
+			}],
+			items		:[grid],
+			listeners	:{
+				hide: function(){
+					this.fireEvent('dialogClosed', this.value);
+					//this.focus.defer(10, this);
+					dialog.destroy();
+				}.bind(this)				
+			},
+			buttons		: [{
+                text: ORYX.I18N.PropertyWindow.ok,
+                handler: function(){	 
+                	var outValue = "";
+                	grid.getView().refresh();
+                	grid.stopEditing();
+                	scriptedAssignment.data.each(function() {
+                		if(this.data['script'].length > 0) {
+                			if(this.data['script_language'].length > 0) {
+                				outValue += this.data['script'] + ":" + this.data['script_language'] + "`";
+                			} else {
+                				outValue += this.data['script'] + "`";
                 			}
                 		}
                     });

@@ -1,5 +1,5 @@
 {
-	"title":"jBPM BPMN2 (Full)",
+	"title":"BPMN2 (Full)",
 	"namespace":"http://b3mn.org/stencilset/bpmn2.0#",
 	"description":"This is the jBPM BPMN 2.0 stencil set specification.",
 	"description_ja":"これはjBPM BPMN 2.0ステンシルセット仕様です。",
@@ -3115,7 +3115,51 @@
 					"readonly":false,
 					"optional":true,
 					"fortasktypes":"None|User"
-				}
+				},
+				{
+                    "id":"actions",
+                    "type":"Actions",
+                    "title":"Actions",
+                    "value":"",
+                    "description":"actions",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"notifications",
+                    "type":"Notifications",
+                    "title":"Notifications",
+                    "value":"",
+                    "description":"notifications",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"roles",
+                    "type":"Roles",
+                    "title":"Roles",
+                    "value":"",
+                    "description":"roles",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"scriptedAssignment",
+                    "type":"ScriptedAssignment",
+                    "title":"ScriptedAssignment",
+                    "value":"",
+                    "description":"scripted assignment",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                }
 			]
 		},
 		// start custom workitems
@@ -3291,7 +3335,7 @@
 					"readonly":true,
 					"optional":false,
 					"refToView":"",
-					"items":[
+					"items":["
 						\{
 							"id":"c1",
 							"title":"None",
@@ -5240,7 +5284,51 @@
 					"readonly":true,
 					"optional":false,
 					"length":""
-				}
+				},
+				{
+                    "id":"actions",
+                    "type":"Actions",
+                    "title":"Actions",
+                    "value":"",
+                    "description":"actions",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"notifications",
+                    "type":"Notifications",
+                    "title":"Notifications",
+                    "value":"",
+                    "description":"notifications",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"roles",
+                    "type":"Roles",
+                    "title":"Roles",
+                    "value":"",
+                    "description":"roles",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"scriptedAssignment",
+                    "type":"ScriptedAssignment",
+                    "title":"ScriptedAssignment",
+                    "value":"",
+                    "description":"scripted assignment",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                }
 			],
 			"roles": 			[
 				"all",
@@ -5348,7 +5436,96 @@
 					"refToView":"",
 					"length":"50",
 					"wrapLines":true
-				}
+				},
+				{
+                    "id":"actions",
+                    "type":"Actions",
+                    "title":"Actions",
+                    "value":"",
+                    "description":"actions",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"notifications",
+                    "type":"Notifications",
+                    "title":"Notifications",
+                    "value":"",
+                    "description":"notifications",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"roles",
+                    "type":"Roles",
+                    "title":"Roles",
+                    "value":"",
+                    "description":"roles",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"scriptedAssignment",
+                    "type":"ScriptedAssignment",
+                    "title":"ScriptedAssignment",
+                    "value":"",
+                    "description":"scripted assignment",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"script",
+                    "type":"Expression",
+                    "title":"Script",
+                    "value":"",
+                    "description":"Script that can be run when the Task is performed. Related to the Script TaskType, if a script is not included, then the Task will act equivalent to a TaskType of None.",
+                    "description_ja":"タスクを実行するときに実行可能なスクリプト。スクリプトのTaskTypeに関連して、スクリプトが含まれない場合は、タスクはTaskTypeがNoneである場合と同じように動作します。",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Script",
+                    "popular":true
+                },
+                {
+                    "id":"script_language",
+                    "type":"Choice",
+                    "title":"ScriptLanguage",
+                    "value":"beanshell",
+                    "description":"Defines the script language. The script language MUST be provided if a script is provided.",
+                    "description_ja":"スクリプト言語を定義します。スクリプトを使用する場合は、スクリプト言語を指定する必要があります。",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true,
+                    "items": [
+                        {
+                            "id": "c1",
+                            "title":"beanshell","value":"beanshell"
+                        },{
+                            "id": "c2",
+                            "title": "drl","value": "drl"
+                        },{
+                            "id": "c3",
+                            "title": "groovy","value": "groovy"
+                        },{
+                            "id": "c4",
+                            "title": "javascript","value": "javascript"
+                        },{
+                            "id": "c5",
+                            "title": "python","value": "python"
+                        },{
+                            "id": "c6",
+                            "title": "ruby","value": "ruby"
+                        }
+                    ]                                               
+                }
 				/**,
 				{
 					"id":"gate_outgoingsequenceflow",
@@ -6783,7 +6960,51 @@
 					"refToView": ["text_name"],
 					"fill":true,
 					"stroke":false
-				}
+				},
+				{
+                    "id":"actions",
+                    "type":"Actions",
+                    "title":"Actions",
+                    "value":"",
+                    "description":"actions",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"notifications",
+                    "type":"Notifications",
+                    "title":"Notifications",
+                    "value":"",
+                    "description":"notifications",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"roles",
+                    "type":"Roles",
+                    "title":"Roles",
+                    "value":"",
+                    "description":"roles",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"scriptedAssignment",
+                    "type":"ScriptedAssignment",
+                    "title":"ScriptedAssignment",
+                    "value":"",
+                    "description":"scripted assignment",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                }
 				/**{
 					"id":"trigger",
 					"type":"String",
@@ -9243,16 +9464,49 @@
 					"stroke":false
 				},
 				{
-				    "id":"onEntryActionsOfEnd",
-                    "type":"ActionEnd",
-                    "title":"On Entry Actions Of End",
+                    "id":"actions",
+                    "type":"Actions",
+                    "title":"Actions",
                     "value":"",
-                    "description":"on entry actions of end",
-                    "description_ja":"アクション開始時",
+                    "description":"actions",
                     "readonly":false,
                     "optional":true,
-                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script"
-				}
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"notifications",
+                    "type":"Notifications",
+                    "title":"Notifications",
+                    "value":"",
+                    "description":"notifications",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"roles",
+                    "type":"Roles",
+                    "title":"Roles",
+                    "value":"",
+                    "description":"roles",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                },
+                {
+                    "id":"scriptedAssignment",
+                    "type":"ScriptedAssignment",
+                    "title":"ScriptedAssignment",
+                    "value":"",
+                    "description":"scripted assignment",
+                    "readonly":false,
+                    "optional":true,
+                    "fortasktypes":"None|Send|Receive|User|Manual|Service|Script",
+                    "popular":true
+                }
 				/**{
 					"id":"trigger",
 					"type":"String",

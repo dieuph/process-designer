@@ -168,7 +168,12 @@ ORYX.CONFIG.TYPE_TEXT =					"text";
 ORYX.CONFIG.TYPE_VARDEF =               "vardef";
 ORYX.CONFIG.TYPE_EXPRESSION =           "expression";
 ORYX.CONFIG.TYPE_ACTION =               "action";
-ORYX.CONFIG.TYPE_ACTION_END =           "actionend";
+
+ORYX.CONFIG.TYPE_ACTIONS =              "actions";
+ORYX.CONFIG.TYPE_NOTIFICATIONS =        "notifications";
+ORYX.CONFIG.TYPE_ROLES =          		"roles";
+ORYX.CONFIG.TYPE_SCRIPTED_ASSIGNMENT =  "scriptedassignment";
+
 ORYX.CONFIG.TYPE_GLOBAL =               "global";
 ORYX.CONFIG.TYPE_IMPORT =               "import";
 ORYX.CONFIG.TYPE_DATAINPUT =            "datainput";

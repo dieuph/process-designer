@@ -18,6 +18,7 @@ package org.jbpm.designer.bpmn2.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2317,22 +2318,75 @@ public class Bpmn2JsonUnmarshaller {
         } else {
             ee.setName("");
         }
-        // process on-entry and on-exit actions as custom elements
-        if(properties.get("onentryactionsofend") != null && properties.get("onentryactionsofend").length() > 0) {
-            String[] allActions = properties.get("onentryactionsofend").split( "\\|\\s*" );
+        
+        // process actions as custom elements
+        if(properties.get("actions") != null && properties.get("actions").length() > 0) {
+            String[] allActions = properties.get("actions").split( "\\|\\s*" );
             for(String action : allActions) {
                 OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
                 onEntryScript.setScript(wrapInCDATABlock(action));
                 
-                String scriptLanguage = "http://www.java.com/java";
-//                if(properties.get("script_language").equals("java")) {	
-//                    scriptLanguage = "http://www.java.com/java";
-//                } else if(properties.get("script_language").equals("mvel")) {
-//                    scriptLanguage = "http://www.mvel.org/2.0";
-//                } else {
-//                    // default to java
-//                    scriptLanguage = "http://www.java.com/java";
-//                }
+                String scriptLanguage = "action";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(ee.getExtensionValues() == null || ee.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	ee.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                ee.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process notifications as custom elements
+        if(properties.get("notifications") != null && properties.get("notifications").length() > 0) {
+            String[] allNotifications = properties.get("notifications").split( "\\|\\s*" );
+            for(String notification : allNotifications) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(notification));
+                
+                String scriptLanguage = "notification";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(ee.getExtensionValues() == null || ee.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	ee.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                ee.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process roles as custom elements
+        if(properties.get("roles") != null && properties.get("roles").length() > 0) {
+            String[] allRoles = properties.get("roles").split( "\\|\\s*" );
+            for(String role : allRoles) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(role));
+                
+                String scriptLanguage = "role";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(ee.getExtensionValues() == null || ee.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	ee.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                ee.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process scripted assignment as custom elements
+        if(properties.get("scriptedassignment") != null && properties.get("scriptedassignment").length() > 0) {
+            String[] allScriptedAssignment = properties.get("scriptedassignment").split( "\\|\\s*" );
+            for(String scriptedAssignment : allScriptedAssignment) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment));
+                
+                String scriptLanguage = "scriptedassignment";
                 onEntryScript.setScriptFormat(scriptLanguage); 
                 
                 if(ee.getExtensionValues() == null || ee.getExtensionValues().size() < 1) {
@@ -2387,6 +2441,86 @@ public class Bpmn2JsonUnmarshaller {
             se.setName(escapeXmlString(properties.get("name")));
         } else {
             se.setName("");
+        }
+        
+        // process actions as custom elements
+        if(properties.get("actions") != null && properties.get("actions").length() > 0) {
+            String[] allActions = properties.get("actions").split( "\\|\\s*" );
+            for(String action : allActions) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(action));
+                
+                String scriptLanguage = "action";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(se.getExtensionValues() == null || se.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	se.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                se.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process notifications as custom elements
+        if(properties.get("notifications") != null && properties.get("notifications").length() > 0) {
+            String[] allNotifications = properties.get("notifications").split( "\\|\\s*" );
+            for(String notification : allNotifications) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(notification));
+                
+                String scriptLanguage = "notification";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(se.getExtensionValues() == null || se.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	se.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                se.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process roles as custom elements
+        if(properties.get("roles") != null && properties.get("roles").length() > 0) {
+            String[] allRoles = properties.get("roles").split( "\\|\\s*" );
+            for(String role : allRoles) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(role));
+                
+                String scriptLanguage = "role";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(se.getExtensionValues() == null || se.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	se.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                se.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process scripted assignment as custom elements
+        if(properties.get("scriptedassignment") != null && properties.get("scriptedassignment").length() > 0) {
+            String[] allScriptedAssignment = properties.get("scriptedassignment").split( "\\|\\s*" );
+            for(String scriptedAssignment : allScriptedAssignment) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment));
+                
+                String scriptLanguage = "scriptedassignment";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(se.getExtensionValues() == null || se.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	se.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                se.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
         }
     }
     
@@ -3643,6 +3777,86 @@ public class Bpmn2JsonUnmarshaller {
                 task.getExtensionValues().get(0).getValue().add(extensionElementEntry);
             }
         }
+        
+        // process actions as custom elements
+        if(properties.get("actions") != null && properties.get("actions").length() > 0) {
+            String[] allActions = properties.get("actions").split( "\\|\\s*" );
+            for(String action : allActions) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(action));
+                
+                String scriptLanguage = "action";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(task.getExtensionValues() == null || task.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	task.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                task.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process notifications as custom elements
+        if(properties.get("notifications") != null && properties.get("notifications").length() > 0) {
+            String[] allNotifications = properties.get("notifications").split( "\\|\\s*" );
+            for(String notification : allNotifications) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(notification));
+                
+                String scriptLanguage = "notification";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(task.getExtensionValues() == null || task.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	task.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                task.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process roles as custom elements
+        if(properties.get("roles") != null && properties.get("roles").length() > 0) {
+            String[] allRoles = properties.get("roles").split( "\\|\\s*" );
+            for(String role : allRoles) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(role));
+                
+                String scriptLanguage = "role";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(task.getExtensionValues() == null || task.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	task.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                task.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process scripted assignment as custom elements
+        if(properties.get("scriptedassignment") != null && properties.get("scriptedassignment").length() > 0) {
+            String[] allScriptedAssignment = properties.get("scriptedassignment").split( "\\|\\s*" );
+            for(String scriptedAssignment : allScriptedAssignment) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment));
+                
+                String scriptLanguage = "scriptedassignment";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(task.getExtensionValues() == null || task.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	task.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                task.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
     }
     
     protected void applyUserTaskProperties(UserTask task, Map<String, String> properties) {
@@ -4016,17 +4230,136 @@ public class Bpmn2JsonUnmarshaller {
     }
     
     protected void applyGatewayProperties(Gateway gateway, Map<String, String> properties) {
-        if(properties.get("name") != null && properties.get("name").length() > 0) {
+        if (properties.get("name") != null && properties.get("name").length() > 0) {
             gateway.setName(escapeXmlString(properties.get("name")));
         } else {
             gateway.setName("");
         }
-        if(properties.get("defaultgate") != null && (gateway instanceof InclusiveGateway || gateway instanceof ExclusiveGateway) ) {
+
+        if (properties.get("script") != null && properties.get("script").length() > 0) {
+			String splitedStr = properties.get("script")
+					.replaceAll("\\s+", " ")
+					.replaceAll(";", ";\n\t\t\t")
+					.replaceAll("\\{", "{\n\t\t\t")
+					.replaceAll("\\}", "}\n\t\t\t");
+        	OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+            onEntryScript.setScript(wrapInCDATABlock(splitedStr));
+            
+            String scriptLanguage = "";
+            if(properties.get("script_language").equals("beanshell")) {
+                scriptLanguage = "beanshell";
+            } else if(properties.get("script_language").equals("drl")) {
+                scriptLanguage = "drl";
+            } else if(properties.get("script_language").equals("groovy")) {
+                scriptLanguage = "groovy";
+            } else if(properties.get("script_language").equals("javascript")) {
+                scriptLanguage = "javascript";
+            } else if(properties.get("script_language").equals("python")) {
+                scriptLanguage = "python";
+            } else if(properties.get("script_language").equals("ruby")) {
+                scriptLanguage = "ruby";
+            } else {
+                // default to beanshell
+                scriptLanguage = "beanshell";
+            }
+            onEntryScript.setScriptFormat(scriptLanguage); 
+            
+            if(gateway.getExtensionValues() == null || gateway.getExtensionValues().size() < 1) {
+            	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+            	gateway.getExtensionValues().add(extensionElement);
+            }
+            FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                    (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+            gateway.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+        }
+        
+        // process actions as custom elements
+        if (properties.get("actions") != null && properties.get("actions").length() > 0) {
+            String[] allActions = properties.get("actions").split( "\\|\\s*" );
+            for(String action : allActions) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(action));
+                
+                String scriptLanguage = "action";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(gateway.getExtensionValues() == null || gateway.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	gateway.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                gateway.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process notifications as custom elements
+        if (properties.get("notifications") != null && properties.get("notifications").length() > 0) {
+            String[] allNotifications = properties.get("notifications").split( "\\|\\s*" );
+            for(String notification : allNotifications) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(notification));
+                
+                String scriptLanguage = "notification";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(gateway.getExtensionValues() == null || gateway.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	gateway.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                gateway.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process roles as custom elements
+        if (properties.get("roles") != null && properties.get("roles").length() > 0) {
+            String[] allRoles = properties.get("roles").split( "\\|\\s*" );
+            for(String role : allRoles) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(role));
+                
+                String scriptLanguage = "role";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(gateway.getExtensionValues() == null || gateway.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	gateway.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                gateway.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        // process scripted assignment as custom elements
+        if (properties.get("scriptedassignment") != null && properties.get("scriptedassignment").length() > 0) {
+            String[] allScriptedAssignment = properties.get("scriptedassignment").split( "\\|\\s*" );
+            for(String scriptedAssignment : allScriptedAssignment) {
+                OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
+                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment));
+                
+                String scriptLanguage = "scriptedassignment";
+                onEntryScript.setScriptFormat(scriptLanguage); 
+                
+                if(gateway.getExtensionValues() == null || gateway.getExtensionValues().size() < 1) {
+                	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
+                	gateway.getExtensionValues().add(extensionElement);
+                }
+                FeatureMap.Entry extensionElementEntry = new SimpleFeatureMapEntry(
+                        (Internal) DroolsPackage.Literals.DOCUMENT_ROOT__ON_ENTRY_SCRIPT, onEntryScript);
+                gateway.getExtensionValues().get(0).getValue().add(extensionElementEntry);
+            }
+        }
+        
+        if (properties.get("defaultgate") != null && (gateway instanceof InclusiveGateway || gateway instanceof ExclusiveGateway) ) {
         	ExtendedMetaData metadata = ExtendedMetaData.INSTANCE;
             EAttributeImpl extensionAttribute = (EAttributeImpl) metadata.demandFeature(
                         "http://www.jboss.org/drools", "dg", false, false);
             EStructuralFeatureImpl.SimpleFeatureMapEntry extensionEntry = new EStructuralFeatureImpl.SimpleFeatureMapEntry(extensionAttribute,
                 properties.get("defaultgate"));
+            
             gateway.getAnyAttribute().add(extensionEntry);
         }
     }
