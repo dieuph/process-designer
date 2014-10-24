@@ -2,12 +2,14 @@
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+	xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
 	xmlns="urn:liferay.com:liferay-workflow_6.2.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ext="http://exslt.org/common"
-	exclude-result-prefixes="xsl bpmn2 ext">
+	exclude-result-prefixes="xsl bpmn2 bpmndi dc ext">
 
-    <!-- @author Ph.D -->
+    <!-- @author DieuPH -->
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"
 		omit-xml-declaration="yes" xslt:indent-amount="4"
 		xmlns:xslt="http://xml.apache.org/xslt" />
@@ -47,10 +49,10 @@
                     <xsl:value-of select="./@name" />
                 </name>
 		    </xsl:if>
-		    <xsl:if test="./bpmn2:documentation">
+		    <xsl:if test="./@id">
 		        <metadata>
 	                <xsl:call-template name="metadata">
-	                    <xsl:with-param name="docContent" select="./bpmn2:documentation" />
+	                    <xsl:with-param name="elementId" select="./@id" />
 	                </xsl:call-template>
 	            </metadata>
 		    </xsl:if>
@@ -113,10 +115,10 @@
                     <xsl:value-of select="./@name" />
                 </name>
             </xsl:if>
-			<xsl:if test="./bpmn2:documentation">
+			<xsl:if test="./@id">
                 <metadata>
                     <xsl:call-template name="metadata">
-                        <xsl:with-param name="docContent" select="./bpmn2:documentation" />
+                        <xsl:with-param name="elementId" select="./@id" />
                     </xsl:call-template>
                 </metadata>
             </xsl:if>
@@ -138,24 +140,31 @@
                     </xsl:for-each>
                 </actions>
             </xsl:if>
-            <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
+            <xsl:choose>
+                <xsl:when test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
                        or ./bpmn2:extensionElements//*/@scriptFormat = 'scriptedassignment'">
-                <assignments>
-                    <xsl:for-each select="./bpmn2:extensionElements/*">
-                        <xsl:variable name="propertyType" select="@scriptFormat" />
-                        <xsl:if test="string($propertyType) = 'role'">
-                            <xsl:call-template name="role">
-                                <xsl:with-param name="roleContent" select="current()" />
-                            </xsl:call-template>
-                        </xsl:if>
-                        <xsl:if test="string($propertyType) = 'scriptedassignment'">
-                            <xsl:call-template name="scriptedassignment">
-                                <xsl:with-param name="scriptedContent" select="current()" />
-                            </xsl:call-template>
-                        </xsl:if>
-                    </xsl:for-each>
-                </assignments>
-            </xsl:if>
+                    <assignments>
+	                    <xsl:for-each select="./bpmn2:extensionElements/*">
+	                        <xsl:variable name="propertyType" select="@scriptFormat" />
+	                        <xsl:if test="string($propertyType) = 'role'">
+	                            <xsl:call-template name="role">
+	                                <xsl:with-param name="roleContent" select="current()" />
+	                            </xsl:call-template>
+	                        </xsl:if>
+	                        <xsl:if test="string($propertyType) = 'scriptedassignment'">
+	                            <xsl:call-template name="scriptedassignment">
+	                                <xsl:with-param name="scriptedContent" select="current()" />
+	                            </xsl:call-template>
+	                        </xsl:if>
+	                    </xsl:for-each>
+	                </assignments>
+	            </xsl:when>
+	            <xsl:otherwise>
+	                <assignments>
+	                    <user />
+	                </assignments>
+	            </xsl:otherwise>            
+            </xsl:choose>
 			<xsl:if test="./bpmn2:outgoing">
                 <transitions>
                     <xsl:for-each select="./bpmn2:outgoing">
@@ -175,6 +184,13 @@
                 <name>
                     <xsl:value-of select="./@name" />
                 </name>
+            </xsl:if>
+            <xsl:if test="./@id">
+                <metadata>
+                    <xsl:call-template name="metadata">
+                        <xsl:with-param name="elementId" select="./@id" />
+                    </xsl:call-template>
+                </metadata>
             </xsl:if>
             <xsl:if test="./bpmn2:extensionElements/*">
             <!-- looking for script and script-language -->
@@ -253,42 +269,74 @@
 	<!-- ******* Template for bpmn2:endEvent ******* -->
 	<xsl:template match="bpmn2:endEvent">
 		<state>
-			<name>
-				<xsl:value-of select="./@name" />
-			</name>
-			<metadata>
-				<xsl:call-template name="metadata">
-					<xsl:with-param name="docContent" select="./bpmn2:documentation" />
-				</xsl:call-template>
-			</metadata>
-			<actions>
-                <xsl:for-each select="./bpmn2:extensionElements/*">
-                    <xsl:variable name="propertyType" select="@scriptFormat" />
-                    <xsl:if test="string($propertyType) = 'notification'">
-                        <xsl:call-template name="notification">
-                            <xsl:with-param name="notiContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="string($propertyType) = 'action'">
-                        <xsl:call-template name="action">
-                            <xsl:with-param name="actionContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
-			</actions>
+			<xsl:if test="./@name != ''">
+                <name>
+                    <xsl:value-of select="./@name" />
+                </name>
+            </xsl:if>
+			<xsl:if test="./@id">
+                <metadata>
+                    <xsl:call-template name="metadata">
+                        <xsl:with-param name="elementId" select="./@id" />
+                    </xsl:call-template>
+                </metadata>
+            </xsl:if>
+			<xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'notification'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'action'">
+                <actions>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'notification'">
+                            <xsl:call-template name="notification">
+                                <xsl:with-param name="notiContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'action'">
+                            <xsl:call-template name="action">
+                                <xsl:with-param name="actionContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </actions>
+            </xsl:if>
+            <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'scriptedassignment'">
+                <assignments>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'role'">
+                            <xsl:call-template name="role">
+                                <xsl:with-param name="roleContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'scriptedassignment'">
+                            <xsl:call-template name="scriptedassignment">
+                                <xsl:with-param name="scriptedContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </assignments>
+            </xsl:if>
 		</state>
 	</xsl:template>
 
 	<!-- ********************* [[[[ NOW IS THE TIME FOR FUNCTION POWER ]]]] ********************* -->
 
-	<!-- ******* Function for bpmn2:documentation - metadata ******* -->
-	<xsl:template name="metadata">
-		<xsl:param name="docContent" />
-		<xsl:variable name="normalContent" select="normalize-space($docContent)" />
-		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-		<xsl:value-of select="$normalContent" />
-		<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
-	</xsl:template>
+    <!-- ******* Function for bpmndi:BPMNShape - metadata ******* -->
+    <xsl:template name="metadata">
+        <xsl:param name="elementId" />
+        <xsl:variable name="normalizeId" select="normalize-space($elementId)" />
+        <xsl:variable name="quote">"</xsl:variable>
+        <xsl:for-each select="//bpmndi:BPMNShape">
+            <xsl:if test="string($normalizeId) = string(@bpmnElement)">
+                <xsl:variable name="xValue" select="substring-before(.//*/@x, '.')"></xsl:variable>
+                <xsl:variable name="yValue" select="substring-before(.//*/@y, '.')"></xsl:variable>
+                <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+		        <xsl:value-of select="concat('{', $quote, 'xy', $quote, ':[', $xValue, ',' , $yValue, ']}')" />
+		        <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>                
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
 
 	<!-- ******* Function looking for bpmn2:outgoing - transition ******* -->
 	<xsl:template name="transitionOut">
@@ -298,9 +346,18 @@
 			<xsl:for-each select="//bpmn2:sequenceFlow">
 				<xsl:if test="string(@id) = string($sequenceFlowId)">
 					<transition>
-						<name>
-							<xsl:value-of select="./@name" />
-						</name>
+					    <xsl:choose>
+					        <xsl:when test="./@name">
+                                <name>
+                                    <xsl:value-of select="./@name" />
+                                </name>					        
+					        </xsl:when>
+					        <xsl:otherwise>
+					            <name>
+					                <xsl:value-of select="concat('connector', substring-before(substring-after(@id, '_'), '-'))"></xsl:value-of>
+					            </name>
+					        </xsl:otherwise>
+					    </xsl:choose>
 						<target>
 							<xsl:call-template name="targetRefName">
 								<xsl:with-param name="targetId" select="./@targetRef" />
@@ -338,7 +395,14 @@
 		<xsl:param name="targetId" />
 		<xsl:for-each select="//*">
 			<xsl:if test="string(@id) = string($targetId)">
-				<xsl:value-of select="./@name" />
+			    <xsl:choose>
+				    <xsl:when test="./@name != ''">
+	                    <xsl:value-of select="./@name" />
+				    </xsl:when>
+			        <xsl:otherwise>
+			            <xsl:value-of select="concat('node', substring-before(substring-after(@id, '_'), '-'))"></xsl:value-of>
+			        </xsl:otherwise>
+			    </xsl:choose>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -522,40 +586,53 @@
     <!-- ******* Function for bpmn2:parallelGateway - fork ******* -->
     <xsl:template name="fork">
 	    <fork>
-			<name>
-				<xsl:value-of select="./@name" />
-			</name>
-			<xsl:if test="./bpmn2:extensionElements/*">
-			<actions>
-                <xsl:for-each select="./bpmn2:extensionElements/*">
-                    <xsl:variable name="propertyType" select="@scriptFormat" />
-                    <xsl:if test="string($propertyType) = 'notification'">
-                        <xsl:call-template name="notification">
-                            <xsl:with-param name="notiContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="string($propertyType) = 'action'">
-                        <xsl:call-template name="action">
-                            <xsl:with-param name="actionContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
-            </actions>
-            <assignments>
-                <xsl:for-each select="./bpmn2:extensionElements/*">
-                    <xsl:variable name="propertyType" select="@scriptFormat" />
-                    <xsl:if test="string($propertyType) = 'role'">
-                        <xsl:call-template name="role">
-                            <xsl:with-param name="roleContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="string($propertyType) = 'scriptedassignment'">
-                        <xsl:call-template name="scriptedassignment">
-                            <xsl:with-param name="scriptedContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
-            </assignments>
+			<xsl:if test="./@name != ''">
+	            <name>
+	                <xsl:value-of select="./@name" />
+	            </name>
+	        </xsl:if>
+			<xsl:if test="./@id">
+                <metadata>
+                    <xsl:call-template name="metadata">
+                        <xsl:with-param name="elementId" select="./@id" />
+                    </xsl:call-template>
+                </metadata>
+            </xsl:if>
+			<xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'notification'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'action'">
+                <actions>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'notification'">
+                            <xsl:call-template name="notification">
+                                <xsl:with-param name="notiContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'action'">
+                            <xsl:call-template name="action">
+                                <xsl:with-param name="actionContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </actions>
+            </xsl:if>
+            <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'scriptedassignment'">
+                <assignments>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'role'">
+                            <xsl:call-template name="role">
+                                <xsl:with-param name="roleContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'scriptedassignment'">
+                            <xsl:call-template name="scriptedassignment">
+                                <xsl:with-param name="scriptedContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </assignments>
             </xsl:if>
 			<transitions>
 				<xsl:for-each select="./bpmn2:outgoing">
@@ -570,40 +647,53 @@
     <!-- ******* Function for bpmn2:parallelGateway - join ******* -->
     <xsl:template name="join">
         <join>
-            <name>
-                <xsl:value-of select="./@name" />
-            </name>
-            <xsl:if test="./bpmn2:extensionElements/*">
-            <actions>
-                <xsl:for-each select="./bpmn2:extensionElements/*">
-                    <xsl:variable name="propertyType" select="@scriptFormat" />
-                    <xsl:if test="string($propertyType) = 'notification'">
-                        <xsl:call-template name="notification">
-                            <xsl:with-param name="notiContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="string($propertyType) = 'action'">
-                        <xsl:call-template name="action">
-                            <xsl:with-param name="actionContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
-            </actions>
-            <assignments>
-                <xsl:for-each select="./bpmn2:extensionElements/*">
-                    <xsl:variable name="propertyType" select="@scriptFormat" />
-                    <xsl:if test="string($propertyType) = 'role'">
-                        <xsl:call-template name="role">
-                            <xsl:with-param name="roleContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="string($propertyType) = 'scriptedassignment'">
-                        <xsl:call-template name="scriptedassignment">
-                            <xsl:with-param name="scriptedContent" select="current()" />
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
-            </assignments>
+            <xsl:if test="./@name != ''">
+	            <name>
+	                <xsl:value-of select="./@name" />
+	            </name>
+	        </xsl:if>
+            <xsl:if test="./@id">
+                <metadata>
+                    <xsl:call-template name="metadata">
+                        <xsl:with-param name="elementId" select="./@id" />
+                    </xsl:call-template>
+                </metadata>
+            </xsl:if>
+            <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'notification'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'action'">
+                <actions>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'notification'">
+                            <xsl:call-template name="notification">
+                                <xsl:with-param name="notiContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'action'">
+                            <xsl:call-template name="action">
+                                <xsl:with-param name="actionContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </actions>
+            </xsl:if>
+            <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
+                       or ./bpmn2:extensionElements//*/@scriptFormat = 'scriptedassignment'">
+                <assignments>
+                    <xsl:for-each select="./bpmn2:extensionElements/*">
+                        <xsl:variable name="propertyType" select="@scriptFormat" />
+                        <xsl:if test="string($propertyType) = 'role'">
+                            <xsl:call-template name="role">
+                                <xsl:with-param name="roleContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                        <xsl:if test="string($propertyType) = 'scriptedassignment'">
+                            <xsl:call-template name="scriptedassignment">
+                                <xsl:with-param name="scriptedContent" select="current()" />
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:for-each>
+                </assignments>
             </xsl:if>
             <transitions>
                 <xsl:for-each select="./bpmn2:outgoing">
