@@ -9,7 +9,8 @@
 
 	<!-- Root elemen -->
 	<xsl:template match="rdf:RDF">
-		<epml:epml xmlns:epml="http://www.epml.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.epml.de http://wi.wu-wien.ac.at/home/mendling/EPML/EPML_12.xsd" >
+		<epml:epml xmlns:epml="http://www.epml.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://wi.wu-wien.ac.at/home/mendling/EPML/EPML_12.xsd" >
+<!-- 		<epml:epml xmlns:epml="http://www.epml.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.epml.de http://wi.wu-wien.ac.at/home/mendling/EPML/EPML_12.xsd" > -->
 			<coordinates xOrigin="leftToRight" yOrigin="topToBottom" />
 			<definitions>
 				<xsl:for-each select="//rdf:RDF/rdf:Description">
