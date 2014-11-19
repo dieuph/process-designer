@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />  
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.custom.i18n.resources" value="global" />
+    <constant name="struts.convention.result.path" value="/"></constant>
+    
+    <package name="default" extends="struts-default">
+        
+        <action name="tologin">
+            <result>/index.jsp</result>
+        </action>
+        <action name="toregister">
+            <result>/signup.jsp</result>
+        </action>
+        <action name="toforgotpassword">
+            <result>/forgotpassword.jsp</result>
+        </action>
+        <action name="tochangepassword">
+            <result>/changepassword.jsp</result>
+        </action>
+        <action name="toworkspace">
+            <result type="redirect">
+                <param name="location">/editor?profile=jbpm</param>
+            </result>
+        </action>
+        <action name="login" class="org.authentication.action.LoginAction">
+            <result name="success" type="redirect">
+                <param name="location">/editor?profile=jbpm</param>
+            </result>
+            <result name="error">/index.jsp</result>
+        </action>
+		<action name="logout" class="org.authentication.action.LogoutAction">
+			<result name="success">/index.jsp</result>
+		</action>
+        <action name="register" class="org.authentication.action.RegisterAction">
+            <result name="success">/signup.jsp</result>
+            <result name="error">/signup.jsp</result>
+        </action>
+        <action name="forgotpassword" class="org.authentication.action.ForgotPasswordAction">
+            <result name="success">/forgotpassword.jsp</result>
+            <result name="error">/forgotpassword.jsp</result>
+        </action>
+        <action name="changepassword" class="org.authentication.action.ChangePasswordAction">
+            <result name="success">/changepassword.jsp</result>
+            <result name="error">/changepassword.jsp</result>
+        </action>
+    </package>
+</struts>
