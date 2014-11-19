@@ -281,24 +281,45 @@
                     </xsl:call-template>
                 </metadata>
             </xsl:if>
-			<xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'notification'
+            <xsl:choose>
+                <xsl:when test="./bpmn2:extensionElements//*/@scriptFormat = 'notification'
                        or ./bpmn2:extensionElements//*/@scriptFormat = 'action'">
-                <actions>
-                    <xsl:for-each select="./bpmn2:extensionElements/*">
-                        <xsl:variable name="propertyType" select="@scriptFormat" />
-                        <xsl:if test="string($propertyType) = 'notification'">
-                            <xsl:call-template name="notification">
-                                <xsl:with-param name="notiContent" select="current()" />
-                            </xsl:call-template>
-                        </xsl:if>
-                        <xsl:if test="string($propertyType) = 'action'">
-                            <xsl:call-template name="action">
-                                <xsl:with-param name="actionContent" select="current()" />
-                            </xsl:call-template>
-                        </xsl:if>
-                    </xsl:for-each>
-                </actions>
-            </xsl:if>
+                    <actions>
+	                    <xsl:for-each select="./bpmn2:extensionElements/*">
+	                        <xsl:variable name="propertyType" select="@scriptFormat" />
+	                        <xsl:if test="string($propertyType) = 'notification'">
+	                            <xsl:call-template name="notification">
+	                                <xsl:with-param name="notiContent" select="current()" />
+	                            </xsl:call-template>
+	                        </xsl:if>
+	                        <xsl:if test="string($propertyType) = 'action'">
+	                            <xsl:call-template name="action">
+	                                <xsl:with-param name="actionContent" select="current()" />
+	                            </xsl:call-template>
+	                        </xsl:if>
+	                    </xsl:for-each>
+	                </actions>
+                </xsl:when>
+                <xsl:otherwise>
+	                <actions>
+	                    <action>
+			                <name>approve</name>
+			                <script>
+			                    <xsl:text disable-output-escaping="yes">&#xa;&#x9;&#x9;&#x9;&lt;![CDATA[&#xa;</xsl:text>
+			                    <xsl:text>
+            import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
+            import com.liferay.portal.kernel.workflow.WorkflowConstants;
+            WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.toStatus("approved"), workflowContext);
+                                </xsl:text>
+	                            <xsl:text disable-output-escaping="yes">&#xa;&#x9;&#x9;&#x9;]]&gt;&#xa;</xsl:text>
+	                            <xsl:text>&#x9;&#x9;&#x9;</xsl:text>
+			                </script>
+			                <script-language>groovy</script-language>
+			                <execution-type>onEntry</execution-type>
+			            </action>
+			        </actions>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="./bpmn2:extensionElements//*/@scriptFormat = 'role'
                        or ./bpmn2:extensionElements//*/@scriptFormat = 'scriptedassignment'">
                 <assignments>
