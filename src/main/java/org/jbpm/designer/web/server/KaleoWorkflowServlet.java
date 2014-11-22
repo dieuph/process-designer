@@ -34,7 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author ]
+ * @author 
  * a file based repository that uses the UUID element to save files in individual spots on the file system.
  *
  */

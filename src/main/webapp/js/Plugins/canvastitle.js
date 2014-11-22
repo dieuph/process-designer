@@ -94,41 +94,41 @@ ORYX.Plugins.CanvasTitle = {
 	showTitle : function() {
 		this.titleNode.textContent = this._getTitleFromJSON();
 		
-		this.facade.raiseEvent({
-            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-            id: this.titleFormID,
-            shapes: [this.facade.getCanvas()],
-            node: this.processFormP1,
-            nodePosition: "CANVAS_TITLE_FORM"
-        });
-		this.facade.raiseEvent({
-            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-            id: this.titleFormID,
-            shapes: [this.facade.getCanvas()],
-            node: this.processFormP2,
-            nodePosition: "CANVAS_TITLE_FORM"
-        });
-		this.facade.raiseEvent({
-            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-            id: this.titleFormID,
-            shapes: [this.facade.getCanvas()],
-            node: this.processFormP3,
-            nodePosition: "CANVAS_TITLE_FORM"
-        });
-		this.facade.raiseEvent({
-            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-            id: this.titleFormID,
-            shapes: [this.facade.getCanvas()],
-            node: this.processFormP4,
-            nodePosition: "CANVAS_TITLE_FORM"
-        });
-		this.facade.raiseEvent({
-            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-            id: this.titleFormID,
-            shapes: [this.facade.getCanvas()],
-            node: this.processFormP5,
-            nodePosition: "CANVAS_TITLE_FORM"
-        });
+//		this.facade.raiseEvent({
+//            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
+//            id: this.titleFormID,
+//            shapes: [this.facade.getCanvas()],
+//            node: this.processFormP1,
+//            nodePosition: "CANVAS_TITLE_FORM"
+//        });
+//		this.facade.raiseEvent({
+//            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
+//            id: this.titleFormID,
+//            shapes: [this.facade.getCanvas()],
+//            node: this.processFormP2,
+//            nodePosition: "CANVAS_TITLE_FORM"
+//        });
+//		this.facade.raiseEvent({
+//            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
+//            id: this.titleFormID,
+//            shapes: [this.facade.getCanvas()],
+//            node: this.processFormP3,
+//            nodePosition: "CANVAS_TITLE_FORM"
+//        });
+//		this.facade.raiseEvent({
+//            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
+//            id: this.titleFormID,
+//            shapes: [this.facade.getCanvas()],
+//            node: this.processFormP4,
+//            nodePosition: "CANVAS_TITLE_FORM"
+//        });
+//		this.facade.raiseEvent({
+//            type: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
+//            id: this.titleFormID,
+//            shapes: [this.facade.getCanvas()],
+//            node: this.processFormP5,
+//            nodePosition: "CANVAS_TITLE_FORM"
+//        });
 		
 		
 		this.facade.raiseEvent({

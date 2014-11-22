@@ -94,7 +94,7 @@
 		<servlet-class>org.jbpm.designer.web.server.UUIDBasedRepositoryServlet</servlet-class>
 		<init-param>
 			<param-name>factoryName</param-name>
-			<param-value>jbpm</param-value>
+			<param-value>workflow</param-value>
 		</init-param>
 	</servlet>
 	<servlet>

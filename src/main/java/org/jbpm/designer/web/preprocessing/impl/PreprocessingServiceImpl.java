@@ -53,6 +53,7 @@ public class PreprocessingServiceImpl implements IDiagramPreprocessingService {
     public void init(ServletContext context) {
         _registry.put("default", new DefaultPreprocessingUnit(context));
         _registry.put("jbpm", new JbpmPreprocessingUnit(context));
+        _registry.put("workflow", new JbpmPreprocessingUnit(context));
     }
     
 }

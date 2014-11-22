@@ -62,55 +62,55 @@ ORYX.Plugins.View = {
 		}
 
 		
-		/* Register zoom in */
-		this.facade.offer({
-			'name':ORYX.I18N.View.zoomIn,
-			'functionality': this.zoom.bind(this, [1.0 + ORYX.CONFIG.ZOOM_OFFSET]),
-			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/magnifier_zoom_in.png",
-			'description': ORYX.I18N.View.zoomInDesc,
-			'index': 1,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){return this.zoomLevel < this.maxZoomLevel }.bind(this)});
+//		/* Register zoom in */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.zoomIn,
+//			'functionality': this.zoom.bind(this, [1.0 + ORYX.CONFIG.ZOOM_OFFSET]),
+//			'group': ORYX.I18N.View.group,
+//			'icon': ORYX.PATH + "images/magnifier_zoom_in.png",
+//			'description': ORYX.I18N.View.zoomInDesc,
+//			'index': 1,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){return this.zoomLevel < this.maxZoomLevel }.bind(this)});
+//		
+//		/* Register zoom out */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.zoomOut,
+//			'functionality': this.zoom.bind(this, [1.0 - ORYX.CONFIG.ZOOM_OFFSET]),
+//			'group': ORYX.I18N.View.group,
+//			'icon': ORYX.PATH + "images/magnifier_zoom_out.png",
+//			'description': ORYX.I18N.View.zoomOutDesc,
+//			'index': 2,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){ return this._checkSize() }.bind(this)});
 		
-		/* Register zoom out */
-		this.facade.offer({
-			'name':ORYX.I18N.View.zoomOut,
-			'functionality': this.zoom.bind(this, [1.0 - ORYX.CONFIG.ZOOM_OFFSET]),
-			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/magnifier_zoom_out.png",
-			'description': ORYX.I18N.View.zoomOutDesc,
-			'index': 2,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){ return this._checkSize() }.bind(this)});
+//		/* Register zoom standard */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.zoomStandard,
+//			'functionality': this.setAFixZoomLevel.bind(this, 1),
+//			'group': ORYX.I18N.View.group,
+//			'icon': ORYX.PATH + "images/zoom_standard.png",
+//			'cls' : 'icon-large',
+//			'description': ORYX.I18N.View.zoomStandardDesc,
+//			'index': 3,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){return this.zoomLevel != 1}.bind(this)
+//		});
 		
-		/* Register zoom standard */
-		this.facade.offer({
-			'name':ORYX.I18N.View.zoomStandard,
-			'functionality': this.setAFixZoomLevel.bind(this, 1),
-			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/zoom_standard.png",
-			'cls' : 'icon-large',
-			'description': ORYX.I18N.View.zoomStandardDesc,
-			'index': 3,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){return this.zoomLevel != 1}.bind(this)
-		});
-		
-		/* Register zoom fit to model */
-		this.facade.offer({
-			'name':ORYX.I18N.View.zoomFitToModel,
-			'functionality': this.zoomFitToModel.bind(this),
-			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/image.png",
-			'description': ORYX.I18N.View.zoomFitToModelDesc,
-			'index': 4,
-			'minShape': 0,
-			'maxShape': 0
-		});
+//		/* Register zoom fit to model */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.zoomFitToModel,
+//			'functionality': this.zoomFitToModel.bind(this),
+//			'group': ORYX.I18N.View.group,
+//			'icon': ORYX.PATH + "images/image.png",
+//			'description': ORYX.I18N.View.zoomFitToModelDesc,
+//			'index': 4,
+//			'minShape': 0,
+//			'maxShape': 0
+//		});
 		
 		/* Register popout to model */
 //		this.facade.offer({
@@ -133,92 +133,92 @@ ORYX.Plugins.View = {
 //			}.bind(this)
 //		});
 		
-		/* Register full screen to model */
-		this.facade.offer({
-			'name':'Show in full screen',
-			'functionality': this.showInFullScreen.bind(this),
-			'group': ORYX.I18N.View.jbpmgroup,
-			'icon': ORYX.PATH + "images/fullscreen.png",
-			'description': 'Show in full screen mode',
-			'index': 2,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
+//		/* Register full screen to model */
+//		this.facade.offer({
+//			'name':'Show in full screen',
+//			'functionality': this.showInFullScreen.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			'icon': ORYX.PATH + "images/fullscreen.png",
+//			'description': 'Show in full screen mode',
+//			'index': 2,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 		
 		
-		/* Register task form generation to model */
-		this.facade.offer({
-			'name':ORYX.I18N.View.generateTaskForms,
-			'functionality': this.generateTaskForms.bind(this),
-			'group': ORYX.I18N.View.jbpmgroup,
-			'icon': ORYX.PATH + "images/human_task.gif",
-			'description': ORYX.I18N.View.generateTaskFormsDesc,
-			'index': 3,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
+//		/* Register task form generation to model */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.generateTaskForms,
+//			'functionality': this.generateTaskForms.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			'icon': ORYX.PATH + "images/human_task.gif",
+//			'description': ORYX.I18N.View.generateTaskFormsDesc,
+//			'index': 3,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 		
 		/* Register sharing to model 1*/
-		this.facade.offer({
-			'name': "Share Process Image",
-			'functionality': this.shareProcessImage.bind(this),
-			'group': ORYX.I18N.View.jbpmgroup,
-			//'icon': ORYX.PATH + "images/share.gif",
-			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
-			'description': "Share Process Image",
-			'index': 1,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
+//		this.facade.offer({
+//			'name': "Share Process Image",
+//			'functionality': this.shareProcessImage.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			//'icon': ORYX.PATH + "images/share.gif",
+//			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
+//			'description': "Share Process Image",
+//			'index': 1,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 		
 		/* Register sharing to model 2*/
-		this.facade.offer({
-			'name': "Share Process PDF",
-			'functionality': this.shareProcessPdf.bind(this),
-			'group': ORYX.I18N.View.jbpmgroup,
-			//'icon': ORYX.PATH + "images/share.gif",
-			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
-			'description': "Share Process PDF",
-			'index': 2,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
+//		this.facade.offer({
+//			'name': "Share Process PDF",
+//			'functionality': this.shareProcessPdf.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			//'icon': ORYX.PATH + "images/share.gif",
+//			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
+//			'description': "Share Process PDF",
+//			'index': 2,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 		
 		/* Register import from BPMN2*/
 		this.facade.offer({
@@ -264,57 +264,14 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register sharing to model 3*/
+		/* Register export to BPMN2 */
 		this.facade.offer({
-			'name': "Share Embeddable Process",
-			'functionality': this.shareEmbeddableProcess.bind(this),
+			'name': "Export to BPMN2",
+			'functionality': this.showProcessBPMN.bind(this),
 			'group': ORYX.I18N.View.jbpmgroup,
 			//'icon': ORYX.PATH + "images/share.gif",
-			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
-			'description': "Share Embeddable Process",
-			'index': 3,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
-		
-		/* Register diff to model */
-		this.facade.offer({
-			'name':ORYX.I18N.View.viewDiff,
-			'functionality': this.diffprocess.bind(this),
-			'group': ORYX.I18N.View.jbpmgroup,
-			'icon': ORYX.PATH + "images/diff.gif",
-			'description': ORYX.I18N.View.viewDiffDesc,
-			'index': 5,
-			'minShape': 0,
-			'maxShape': 0,
-			'isEnabled': function(){
-				profileParamName = "profile";
-				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
-		        regexa = new RegExp( regexSa );
-		        profileParams = regexa.exec( window.location.href );
-		        profileParamValue = profileParams[1]; 
-				return profileParamValue == "jbpm";
-			}.bind(this)
-		});
-		
-		// Footer items
-		/* Register information view to model */
-		this.facade.offer({
-			'name':'ViewBPMN2Button',
-			'functionality': this.showProcessBPMN.bind(this),
-			'group': 'footerViewSourceButton',
-			'text': 'BPMN2',
-			'description': 'View BPMN2 Source',
+			dropDownGroupIcon : ORYX.PATH + "images/export.png",
+			'description': "Export to BPMN2",
 			'index': 1,
 			'minShape': 0,
 			'maxShape': 0,
@@ -329,13 +286,14 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register information view to model */
+		/* Register export to JSON */
 		this.facade.offer({
-			'name':'ViewJSONButton',
+			'name': "Export to JSON",
 			'functionality': this.showProcessJSON.bind(this),
-			'group': 'footerViewJSONButton',
-			'text': 'JSON',
-			'description': 'View JSON Source',
+			'group': ORYX.I18N.View.jbpmgroup,
+			//'icon': ORYX.PATH + "images/share.gif",
+			dropDownGroupIcon : ORYX.PATH + "images/export.png",
+			'description': "Export to JSON",
 			'index': 2,
 			'minShape': 0,
 			'maxShape': 0,
@@ -350,13 +308,14 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register information view to model */
+		/* Register export to PNG */
 		this.facade.offer({
-			'name':'ViewSVGButton',
-			'functionality': this.showProcessSVG.bind(this),
-			'group': 'footerViewSVGButton',
-			'text': 'SVG',
-			'description': 'View SVG Source',
+			'name': "Export to PNG",
+			'functionality': this.showAsPNG.bind(this),
+			'group': ORYX.I18N.View.jbpmgroup,
+			//'icon': ORYX.PATH + "images/share.gif",
+			dropDownGroupIcon : ORYX.PATH + "images/export.png",
+			'description': "Export to PNG image",
 			'index': 3,
 			'minShape': 0,
 			'maxShape': 0,
@@ -371,13 +330,14 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register information view to model */
+		/* Register export to PDF */
 		this.facade.offer({
-			'name':'ViewERDFButton',
-			'functionality': this.showProcessERDF.bind(this),
-			'group': 'footerViewERDFButton',
-			'text': 'ERDF',
-			'description': 'View ERDF Source',
+			'name': "Export to PDF",
+			'functionality': this.showAsPDF.bind(this),
+			'group': ORYX.I18N.View.jbpmgroup,
+			//'icon': ORYX.PATH + "images/share.gif",
+			dropDownGroupIcon : ORYX.PATH + "images/export.png",
+			'description': "Export to PDF document",
 			'index': 4,
 			'minShape': 0,
 			'maxShape': 0,
@@ -392,13 +352,14 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register information view to model */
+		/* Register export to Kaleo */
 		this.facade.offer({
-			'name':'ViewPDFButton',
-			'functionality': this.showAsPDF.bind(this),
-			'group': 'footerViewPDFButton',
-			'text': 'PDF',
-			'description': 'View PDF',
+			'name': "Export to KALEO",
+			'functionality': this.showAsKaleoWorkflow.bind(this),
+			'group': ORYX.I18N.View.jbpmgroup,
+			//'icon': ORYX.PATH + "images/share.gif",
+			dropDownGroupIcon : ORYX.PATH + "images/export.png",
+			'description': "Export to Kaleo Workflow",
 			'index': 5,
 			'minShape': 0,
 			'maxShape': 0,
@@ -412,15 +373,58 @@ ORYX.Plugins.View = {
 				return profileParamValue == "jbpm";
 			}.bind(this)
 		});
+//		/* Register sharing to model 3*/
+//		this.facade.offer({
+//			'name': "Share Embeddable Process",
+//			'functionality': this.shareEmbeddableProcess.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			//'icon': ORYX.PATH + "images/share.gif",
+//			dropDownGroupIcon : ORYX.PATH + "images/share.gif",
+//			'description': "Share Embeddable Process",
+//			'index': 3,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 		
-		/* Register information view to model */
+//		/* Register diff to model */
+//		this.facade.offer({
+//			'name':ORYX.I18N.View.viewDiff,
+//			'functionality': this.diffprocess.bind(this),
+//			'group': ORYX.I18N.View.jbpmgroup,
+//			'icon': ORYX.PATH + "images/diff.gif",
+//			'description': ORYX.I18N.View.viewDiffDesc,
+//			'index': 5,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+		
+		// Footer items
+		/* Register information view to logout */
 		this.facade.offer({
-			'name':'ViewPNGButton',
-			'functionality': this.showAsPNG.bind(this),
-			'group': 'footerViewPNGButton',
-			'text': 'PNG',
-			'description': 'View PNG',
-			'index': 6,
+			'name':'LogoutButton',
+			'functionality': this.logout.bind(this),
+			'group': 'footerLogoutButton',
+			'text': 'LOGOUT',
+			'description': 'Log out',
+			'index': 1,
 			'minShape': 0,
 			'maxShape': 0,
 			'isEnabled': function(){
@@ -434,17 +438,17 @@ ORYX.Plugins.View = {
 			}.bind(this)
 		});
 		
-		/* Register information view to model */
+		/* Register information view to change password */
 		this.facade.offer({
-			'name': 'ViewKaleoWorkflowButton',
-			'functionality': this.showAsKaleoWorkflow.bind(this),
-			'group': 'footerViewKaleoWorkflowButton',
-			'text': 'KALEO',
-			'description': 'View Kaleo Workflow Source',
-			'index': 7,
+			'name':'ChangePasswordButton',
+			'functionality': this.changePassword.bind(this),
+			'group': 'footerLogoutButton',
+			'text': 'CHANGE PASSWORD',
+			'description': 'Change Your Password',
+			'index': 2,
 			'minShape': 0,
 			'maxShape': 0,
-			'idEnabled': function(){
+			'isEnabled': function(){
 				profileParamName = "profile";
 				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
@@ -454,6 +458,152 @@ ORYX.Plugins.View = {
 				return profileParamValue == "jbpm";
 			}.bind(this)
 		});
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewBPMN2Button',
+//			'functionality': this.showProcessBPMN.bind(this),
+//			'group': 'footerViewSourceButton',
+//			'text': 'BPMN2',
+//			'description': 'View BPMN2 Source',
+//			'index': 1,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewJSONButton',
+//			'functionality': this.showProcessJSON.bind(this),
+//			'group': 'footerViewJSONButton',
+//			'text': 'JSON',
+//			'description': 'View JSON Source',
+//			'index': 2,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewSVGButton',
+//			'functionality': this.showProcessSVG.bind(this),
+//			'group': 'footerViewSVGButton',
+//			'text': 'SVG',
+//			'description': 'View SVG Source',
+//			'index': 3,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewERDFButton',
+//			'functionality': this.showProcessERDF.bind(this),
+//			'group': 'footerViewERDFButton',
+//			'text': 'ERDF',
+//			'description': 'View ERDF Source',
+//			'index': 4,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewPDFButton',
+//			'functionality': this.showAsPDF.bind(this),
+//			'group': 'footerViewPDFButton',
+//			'text': 'PDF',
+//			'description': 'View PDF',
+//			'index': 5,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name':'ViewPNGButton',
+//			'functionality': this.showAsPNG.bind(this),
+//			'group': 'footerViewPNGButton',
+//			'text': 'PNG',
+//			'description': 'View PNG',
+//			'index': 6,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'isEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
+//		
+//		/* Register information view to model */
+//		this.facade.offer({
+//			'name': 'ViewKaleoWorkflowButton',
+//			'functionality': this.showAsKaleoWorkflow.bind(this),
+//			'group': 'footerViewKaleoWorkflowButton',
+//			'text': 'KALEO',
+//			'description': 'View Kaleo Workflow Source',
+//			'index': 7,
+//			'minShape': 0,
+//			'maxShape': 0,
+//			'idEnabled': function(){
+//				profileParamName = "profile";
+//				profileParamName = profileParamName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+//				regexSa = "[\\?&]"+profileParamName+"=([^&#]*)";
+//		        regexa = new RegExp( regexSa );
+//		        profileParams = regexa.exec( window.location.href );
+//		        profileParamValue = profileParams[1]; 
+//				return profileParamValue == "jbpm";
+//			}.bind(this)
+//		});
 	},
 	
 	/**
@@ -1190,6 +1340,60 @@ ORYX.Plugins.View = {
 			title:'JSON Source',
 			items: [cf],
 			buttons:[{
+				text: 'Save to file',
+				handler: function(){
+				    var processJSON = ORYX.EDITOR.getSerializedJSON();
+				    var processName = jsonPath(processJSON.evalJSON(), "$.properties.name");
+				    var processPackage = jsonPath(processJSON.evalJSON(), "$.properties.package");
+				    var processVersion = jsonPath(processJSON.evalJSON(), "$.properties.version");
+				    var fileName = "";
+				    if(processPackage && processPackage != "") {
+				        fileName += processPackage;
+				    }
+				    if(processName && processName != "") {
+				        if(fileName != "") {
+				            fileName += ".";
+				        }
+				        fileName += processName;
+				    }
+				    if(processVersion && processVersion != "") {
+				        if(fileName != "") {
+				            fileName += ".";
+				        }
+				        fileName += "v" + processVersion;
+				    }
+				    if(fileName == "") {
+				        fileName = "processjson";
+				    }
+				    var toStoreValue = cf.getValue();
+				    var method ="post";
+				    var form = document.createElement("form");
+				    form.setAttribute("name", "storetofileform");
+				    form.setAttribute("method", method);
+				    form.setAttribute("action", ORYX.PATH + "filestore");
+				    form.setAttribute("target", "_blank");
+
+				    var fnameInput = document.createElement("input");
+				    fnameInput.setAttribute("type", "hidden");
+				    fnameInput.setAttribute("name", "fname");
+				    fnameInput.setAttribute("value", fileName);
+				    form.appendChild(fnameInput);
+
+				    var fextInput = document.createElement("input");
+				    fextInput.setAttribute("type", "hidden");
+				    fextInput.setAttribute("name", "fext");
+				    fextInput.setAttribute("value", "json");
+				    form.appendChild(fextInput);
+
+				    var fdataInput = document.createElement("input");
+				    fdataInput.setAttribute("type", "hidden");
+				    fdataInput.setAttribute("name", "data");
+				    fdataInput.setAttribute("value", toStoreValue);
+				    form.appendChild(fdataInput);
+				    document.body.appendChild(form);
+				    form.submit();	 
+				}
+			},{
 				text : 'Close',
 				handler:function(){
 					win.close();
@@ -1421,7 +1625,7 @@ ORYX.Plugins.View = {
     	   	                		fileName += "v" + processVersion;
     	   	                	}
     	   	                	if(fileName == "") {
-    	   	                		fileName = "kaleo_workflow_definition";
+    	   	                		fileName = "processkaleoliferay6";
     	   	                	}
     	   	                	
     	   	                	var toStoreValue = cf.getValue();
@@ -1441,7 +1645,7 @@ ORYX.Plugins.View = {
     	   	                 	var fextInput = document.createElement("input");
     	   	                 	fextInput.setAttribute("type", "hidden");
     	   	              		fextInput.setAttribute("name", "fext");
-    	   	           			fextInput.setAttribute("value", "xml");
+    	   	           			fextInput.setAttribute("value", "kaleo");
     	   	                 	form.appendChild(fextInput);
     	   	                 
     	   	                 	var fdataInput = document.createElement("input");
@@ -1525,6 +1729,15 @@ ORYX.Plugins.View = {
         form.submit();
 	},
 	
+	logout : function() {
+		var redirect = "logout.action";
+		window.location.href = redirect;
+	},
+	
+	changePassword : function() {
+		var redirect = "changepassword.action";
+		window.location.href = redirect;
+	},
 	/**
 	 * It does the actual zooming. It changes the viewable size of the canvas 
 	 * and all to its child elements.
@@ -1643,42 +1856,43 @@ ORYX.Plugins.View = {
 		if(this.zoomLevel > this.maxZoomLevel) {
 			this.zoomLevel = this.maxZoomLevel;			
 		}
-	},
-	goFullscreen : function(id) {
-		if(parent && parent.frames) {
-			if(parent.frames.length < 2) {
-				if(document.getElementById(id).requestFullScreen) {
-					document.getElementById(id).requestFullScreen();
-				} else if(document.getElementById(id).mozRequestFullScreen) {
-					document.getElementById(id).mozRequestFullScreen();
-				} else if(document.getElementById(id).webkitRequestFullScreen) {
-					document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-				} else {
-					Ext.Msg.minWidth = 400;
-	        		Ext.Msg.alert("Browser does not support full screen mode.");
-				}
-			} else {
-				for (var i = 0;i < parent.frames.length;i++) {
-					if(parent.frames[i].ORYX) {
-						parent.frames[i].frameElement.setAttribute('allowFullScreen', 'true');
-						parent.frames[i].frameElement.setAttribute('mozallowfullscreen', 'true');
-						parent.frames[i].frameElement.setAttribute('webkitallowfullscreen', 'true');
-						if(parent.frames[i].frameElement.contentDocument.getElementById(id).requestFullScreen) {
-							parent.frames[i].frameElement.contentDocument.getElementById(id).requestFullScreen();
-						} else if(parent.frames[i].frameElement.contentDocument.getElementById(id).mozRequestFullScreen) {
-							parent.frames[i].frameElement.contentDocument.getElementById(id).mozRequestFullScreen();
-						} else if(parent.frames[i].frameElement.contentDocument.getElementById(id).webkitRequestFullScreen) {
-							parent.frames[i].frameElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-						} else {
-							Ext.Msg.minWidth = 400;
-			        		Ext.Msg.alert("Browser does not support full screen mode.");
-						}
-					}
-				}
-			}
-			
-		}
 	}
+//	,
+//	goFullscreen : function(id) {
+//		if(parent && parent.frames) {
+//			if(parent.frames.length < 2) {
+//				if(document.getElementById(id).requestFullScreen) {
+//					document.getElementById(id).requestFullScreen();
+//				} else if(document.getElementById(id).mozRequestFullScreen) {
+//					document.getElementById(id).mozRequestFullScreen();
+//				} else if(document.getElementById(id).webkitRequestFullScreen) {
+//					document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+//				} else {
+//					Ext.Msg.minWidth = 400;
+//	        		Ext.Msg.alert("Browser does not support full screen mode.");
+//				}
+//			} else {
+//				for (var i = 0;i < parent.frames.length;i++) {
+//					if(parent.frames[i].ORYX) {
+//						parent.frames[i].frameElement.setAttribute('allowFullScreen', 'true');
+//						parent.frames[i].frameElement.setAttribute('mozallowfullscreen', 'true');
+//						parent.frames[i].frameElement.setAttribute('webkitallowfullscreen', 'true');
+//						if(parent.frames[i].frameElement.contentDocument.getElementById(id).requestFullScreen) {
+//							parent.frames[i].frameElement.contentDocument.getElementById(id).requestFullScreen();
+//						} else if(parent.frames[i].frameElement.contentDocument.getElementById(id).mozRequestFullScreen) {
+//							parent.frames[i].frameElement.contentDocument.getElementById(id).mozRequestFullScreen();
+//						} else if(parent.frames[i].frameElement.contentDocument.getElementById(id).webkitRequestFullScreen) {
+//							parent.frames[i].frameElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+//						} else {
+//							Ext.Msg.minWidth = 400;
+//			        		Ext.Msg.alert("Browser does not support full screen mode.");
+//						}
+//					}
+//				}
+//			}
+//			
+//		}
+//	}
 };
 
 ORYX.Plugins.View = Clazz.extend(ORYX.Plugins.View);

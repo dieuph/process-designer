@@ -37,15 +37,25 @@ public class FileStoreServlet extends HttpServlet {
 			} catch (Exception e) {
 				resp.sendError(500, e.getMessage());
 			}
-    	} else if (fext != null && fext.equals("xml")) { // @author Ph.D
+    	} else if (fext != null && fext.equals("kaleo")) {
     		try {
 				resp.setContentType("application/xml; charset=UTF-8");
+				resp.setHeader("Content-Disposition",
+				        "attachment; filename=\"" + fname + "." + "xml" + "\"");
+				resp.getWriter().write(data);
+			} catch (Exception e) {
+				resp.sendError(500, e.getMessage());
+			}
+		} else if (fext != null && fext.equals("json")) {
+    		try {
+				resp.setContentType("application/json; charset=UTF-8");
 				resp.setHeader("Content-Disposition",
 				        "attachment; filename=\"" + fname + "." + fext + "\"");
 				resp.getWriter().write(data);
 			} catch (Exception e) {
 				resp.sendError(500, e.getMessage());
 			}
-		}
+		} 
+    	
     }
 }

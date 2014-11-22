@@ -53,6 +53,7 @@ public class ProfileServiceImpl implements IDiagramProfileService {
         _registry.put("jbpm", new JbpmProfileImpl(context));
         _registry.put("drools", new JbpmProfileImpl(context));
         _registry.put("epn", new EpnProfileImpl(context));
+        _registry.put("workflow", new JbpmProfileImpl(context));
         
     }
     

@@ -3,31 +3,53 @@
 		{
 			"title" : "BPMN2 Minimal Subset",
 			"namespace" : "http://b3mn.org/stencilset/bpmn2.0minimal#",
-			"description":"A subset of JBPM BPMN2",
+			"description":"A subset of BPMN2",
 			"definition":"bpmn2.0jbpmminimal/bpmn2.0jbpmminimalsubset.json",
 			"extends":"http://b3mn.org/stencilset/bpmn2.0#"
+		},
+		{
+		    "title" : "BPMN2 Kaleo Subset",
+            "namespace" : "http://b3mn.org/stencilset/bpmn2.0kaleo#",
+            "description":"A subset of BPMN2",
+            "definition":"bpmn2.0kaleo/bpmn2.0kaleosubset.json",
+            "extends":"http://b3mn.org/stencilset/bpmn2.0#"
 		}
 	],
 	"perspectives": [
 		{
 			"title":"BPMN2 (Full)",
 			"namespace":"http://b3mn.org/stencilset/bpmn2.0#",
-			"description":"jBPM Full BPMN2 Features",
+			"description":"Full BPMN2 Features",
 			"stencilset":"http://b3mn.org/stencilset/bpmn2.0#",
 			"removeExtensions" : [
-				"http://b3mn.org/stencilset/bpmn2.0minimal#"
+				"http://b3mn.org/stencilset/bpmn2.0minimal#",
+				"http://b3mn.org/stencilset/bpmn2.0kaleo#"
 			],
 			"addExtensions" : []
 		},
 		{
 			"title":"BPMN2 (Minimal)",
 			"namespace":"http://b3mn.org/stencilset/bpmn2.0minimal#",
-			"description":"jBPM Minimal BPMN2 Features",
+			"description":"Minimal BPMN2 Features",
 			"stencilset":"http://b3mn.org/stencilset/bpmn2.0#",
-			"removeExtensions" : [],
+			"removeExtensions" : [
+			    "http://b3mn.org/stencilset/bpmn2.0kaleo#"
+			],
 			"addExtensions" : [
 				"http://b3mn.org/stencilset/bpmn2.0minimal#"
 			]
+		},
+		{
+		    "title":"BPMN2 (Kaleo)",
+            "namespace":"http://b3mn.org/stencilset/bpmn2.0kaleo#",
+            "description":"Kaleo BPMN2 Features",
+            "stencilset":"http://b3mn.org/stencilset/bpmn2.0#",
+            "removeExtensions" : [
+                "http://b3mn.org/stencilset/bpmn2.0minimal#"
+            ],
+            "addExtensions" : [
+                "http://b3mn.org/stencilset/bpmn2.0kaleo#"
+            ]
 		}
 	]
 }
