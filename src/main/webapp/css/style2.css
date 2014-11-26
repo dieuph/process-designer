@@ -36,7 +36,7 @@
 	right: 0px;
 	min-height: 560px;	
 	margin: 0px auto;	
-	width: 500px;
+	width: 400px;
 	position: relative;	
 }
 /**** Styling the form elements **/
@@ -109,7 +109,7 @@ input {
 
 /* all the input except submit and checkbox */
 #wrapper input:not([type="checkbox"]){
-	width: 92%;
+	width: 90%;
 	margin-top: 4px;
 	padding: 10px 5px 10px 32px;	
 	border: 1px solid rgb(178, 178, 178);
@@ -223,7 +223,7 @@ p.change_link{
 	color: rgb(127, 124, 124);
 	left: 0px;
 	height: 20px;
-	width: 440px;
+	width: 340px;
 	padding: 17px 30px 20px 30px;
 	font-size: 16px	;
 	text-align: right;

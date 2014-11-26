@@ -115,6 +115,7 @@ public class KaleoWorkflowServlet extends HttpServlet {
             IDiagramProfile profile = ServletUtil.getProfile(req, req.getParameter("profile"), getServletContext());
             String json = req.getParameter("data");
             String xml = _repository.toXML(json, profile, preProcessingParam);
+//            System.out.println(xml);
             // init
             String path = getServletContext().getRealPath("/xslt/");
             TransformerFactory transFactory = TransformerFactory.newInstance();

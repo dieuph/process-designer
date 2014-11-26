@@ -19,7 +19,7 @@
     <plugin name="ORYX.Plugins.Undo" />
 <!--     <plugin name="ORYX.Plugins.Arrangement" /> -->
 <!--     <plugin name="ORYX.Plugins.Grouping" /> -->
-<!--     <plugin name="ORYX.Plugins.DragDocker" /> -->
+    <plugin name="ORYX.Plugins.DragDocker" />
 <!--     <plugin name="ORYX.Plugins.AddDocker" /> -->
     <plugin name="ORYX.Plugins.SelectionFrame" />
     <plugin name="ORYX.Plugins.ShapeHighlighting" />
@@ -30,7 +30,7 @@
     <plugin name="ORYX.Plugins.RegexTextEditor" />
     <plugin name="ORYX.Plugins.ConstraintExpressionEditor"/>
     <plugin name="ORYX.Plugins.Overlay"/>
-<!--     <plugin name="ORYX.Plugins.Dictionary"/> -->
+    <plugin name="ORYX.Plugins.Dictionary"/>
     <plugin name="ORYX.Plugins.CanvasTitle"/>
     <plugin name="ORYX.Plugins.InlineTaskFormEditor"/>
     <plugin name="ORYX.Plugins.ExtendedDataAssignmentEditor"/>

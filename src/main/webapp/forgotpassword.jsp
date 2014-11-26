@@ -33,7 +33,7 @@
                                 <div class="action-error"><s:actionerror /></div>
                                 <p> 
                                     <label for="email" class="youmail" data-icon="e" > Your email</label>
-                                    <input id="email" name="email" required="required" type="email" placeholder="mysupermail@mail.com"/> 
+                                    <input id="email" name="email" required="required" type="email" placeholder="youremail@example.com"/> 
                                 </p>
                                 <p class="forgotpwd button"> 
                                     <input type="submit" value="Submit" /> 

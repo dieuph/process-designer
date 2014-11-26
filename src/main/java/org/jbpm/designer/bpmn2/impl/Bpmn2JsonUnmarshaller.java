@@ -3841,13 +3841,12 @@ public class Bpmn2JsonUnmarshaller {
         // process scripted assignment as custom elements
         if(properties.get("scriptedassignment") != null && properties.get("scriptedassignment").length() > 0) {
             String[] allScriptedAssignment = properties.get("scriptedassignment").split( "\\|\\s*" );
+
             for(String scriptedAssignment : allScriptedAssignment) {
                 OnEntryScriptType onEntryScript = DroolsFactory.eINSTANCE.createOnEntryScriptType();
-                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment));
-                
+                onEntryScript.setScript(wrapInCDATABlock(scriptedAssignment.replaceAll("\\{", "\\{\n").replaceAll("\\}", "\\}\n").replaceAll(";", ";\n")));
                 String scriptLanguage = "scriptedassignment";
                 onEntryScript.setScriptFormat(scriptLanguage); 
-                
                 if(task.getExtensionValues() == null || task.getExtensionValues().size() < 1) {
                 	ExtensionAttributeValue extensionElement = Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
                 	task.getExtensionValues().add(extensionElement);

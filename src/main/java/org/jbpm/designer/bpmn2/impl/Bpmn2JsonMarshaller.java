@@ -2180,6 +2180,11 @@ public class Bpmn2JsonMarshaller {
     	} else {
     	    properties.put("name", "");
     	}
+    	if (sequenceFlow.isIsImmediate() == true) {
+			properties.put("isimmediate", "true");
+		} else {
+			properties.put("isimmediate", "");
+		}
     	Expression conditionExpression = sequenceFlow.getConditionExpression();
     	if (conditionExpression instanceof FormalExpression) {
     	    if(((FormalExpression) conditionExpression).getBody() != null) {
@@ -2201,7 +2206,7 @@ public class Bpmn2JsonMarshaller {
     	        properties.put("conditionexpressionlanguage", cdStr);
     	    } 
     	}
-
+    	
         boolean foundBgColor = false;
     	boolean foundBrColor = false;
     	boolean foundFontColor = false;

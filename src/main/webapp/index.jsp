@@ -31,11 +31,11 @@
                                 <div class="action-error"><s:fielderror fieldName="login.field.invalid" /></div>
                                 <p> 
                                     <label for="email" class="youmail" data-icon="e" > Your email </label>
-                                    <input id="email" name="email" required="required" type="email" placeholder="mysupermail@mail.com"/>
+                                    <input id="email" name="email" required="required" type="email" placeholder="youremail@example.com"/>
                                 </p>
                                 <p> 
                                     <label for="password" class="youpasswd" data-icon="p"> Your password </label>
-                                    <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+                                    <input id="password" name="password" required="required" type="password" placeholder="********" /> 
                                 </p>
                                 <p class="keeplogin"> 
                                     <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 

@@ -37,15 +37,15 @@
                                 </div>
                                 <p> 
                                     <label for="password" class="youpasswd" data-icon="p">Your password </label>
-                                    <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                    <input id="password" name="password" required="required" type="password" placeholder="********"/>
                                 </p>
                                 <p> 
                                     <label for="new_password" class="youpasswd" data-icon="p">Your new password </label>
-                                    <input id="new_password" name="new_password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                    <input id="new_password" name="new_password" required="required" type="password" placeholder="********"/>
                                 </p>
                                 <p> 
                                     <label for="new_password_confirm" class="youpasswd" data-icon="p">Please confirm your new password </label>
-                                    <input id="new_password_confirm" name="new_password_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                    <input id="new_password_confirm" name="new_password_confirm" required="required" type="password" placeholder="********"/>
                                 </p>
                                 <p class="signin button"> 
                                     <input type="submit" value="Submit"/> 
