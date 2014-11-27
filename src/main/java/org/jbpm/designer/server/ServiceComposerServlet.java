@@ -32,8 +32,6 @@ package org.jbpm.designer.server;
  * contains example data that illustrate the usage of the parameters and allows
  * to directly start the Service Composer with a bunch of services.
  *
- * @author Stefan Krumnow
- * @author Falko Menge
  **/
 
 import java.io.IOException;

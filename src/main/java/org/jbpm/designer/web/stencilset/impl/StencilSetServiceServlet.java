@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A servlet to serve stencilsets from the StencilSetService.
- * @author Antoine Toulme
  *
  */
 public class StencilSetServiceServlet extends HttpServlet {

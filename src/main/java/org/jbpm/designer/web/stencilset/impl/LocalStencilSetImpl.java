@@ -26,7 +26,6 @@ import org.jbpm.designer.web.stencilset.IDiagramStencilSet;
 
 /**
  * A local implementation of the stencilset for stencilsets defined inside the platform.
- * @author Antoine Toulme
  *
  */
 public class LocalStencilSetImpl extends LocalResource implements IDiagramStencilSet {

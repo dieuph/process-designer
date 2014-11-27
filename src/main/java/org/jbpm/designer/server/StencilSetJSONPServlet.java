@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 /**
  * 
- * @author jan-felix.schwarz@student.hpi.uni-potsdam.de
  *
  */
 public class StencilSetJSONPServlet extends HttpServlet {

@@ -32,7 +32,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 /** 
  * Manager for task form templates.
  * 
- * @author Tihomir Surdilovic
  */
 public class TaskFormTemplateManager {
     private static final Logger _logger = Logger.getLogger(TaskFormTemplateManager.class);

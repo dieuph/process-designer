@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Represents a 2D Point on a canvas
+ * Represents a 2D Point on a canvas
  */
 public class Point {
     Double x;

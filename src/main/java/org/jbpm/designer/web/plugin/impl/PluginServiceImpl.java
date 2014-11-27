@@ -47,7 +47,6 @@ import org.slf4j.LoggerFactory;
 /**
  * A service to manage plugins in the platform.
  * 
- * @author Antoine Toulme
  */
 public class PluginServiceImpl implements IDiagramPluginService {
     

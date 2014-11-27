@@ -21,7 +21,6 @@ import java.util.Map;
 /**
  * The interface defining a plugin.
  * 
- * @author Antoine Toulme
  */
 public interface IDiagramPlugin {
 

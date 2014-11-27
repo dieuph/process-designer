@@ -43,7 +43,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 
 /**
  * The implementation of the jBPM profile for Process Designer.
- * @author Tihomir Surdilovic
  */
 public class JbpmProfileImpl implements IDiagramProfile {
     

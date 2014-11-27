@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Interface for all object, which has a associated stencil
+ * Interface for all object, which has a associated stencil
  */
 public interface Stencil {
 

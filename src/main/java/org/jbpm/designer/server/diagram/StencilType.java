@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Represents a Stencil of an shape with all attributes of the
+ * Represents a Stencil of an shape with all attributes of the
  *         JSONObject stencil which is associated with a shape
  */
 public class StencilType {

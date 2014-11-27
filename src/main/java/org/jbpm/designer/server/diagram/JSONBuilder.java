@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 /**
  * 
- * @author Philipp Giese
  * 
  */
 

@@ -4,7 +4,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * @author gero.decker
  */
 public class StencilSetUtil {
 

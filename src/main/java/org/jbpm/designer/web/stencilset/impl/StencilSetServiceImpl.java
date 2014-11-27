@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
 /**
  * A service to serve stencilsets.
  * 
- * @author Antoine Toulme
  *
  */
 public class StencilSetServiceImpl implements IDiagramStencilSetService {

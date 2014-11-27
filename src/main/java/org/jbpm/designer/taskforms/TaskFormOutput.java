@@ -3,7 +3,6 @@ package org.jbpm.designer.taskforms;
 /** 
  * Holds info for one task form output.
  * 
- * @author Tihomir Surdilovic
  */
 public class TaskFormOutput {
     private String name;

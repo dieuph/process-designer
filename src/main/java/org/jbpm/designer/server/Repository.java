@@ -28,9 +28,6 @@ package org.jbpm.designer.server;
  * contributed to the Oryx project in October 2008 under the terms of the
  * MIT License.
  * 
- * @author Stefan Krumnow
- * @author Falko Menge
- * @author Jan-Felix Schwarz 
  **/
 
 import java.io.ByteArrayInputStream;

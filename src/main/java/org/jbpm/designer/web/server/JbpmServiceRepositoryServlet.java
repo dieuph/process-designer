@@ -32,7 +32,6 @@ import sun.misc.BASE64Encoder;
 
 /**
  * Servlet for interaction with the jbpm service repository.
- * @author tsurdilo
  */
 public class JbpmServiceRepositoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

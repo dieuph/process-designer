@@ -18,8 +18,6 @@ package org.jbpm.designer.web.preference;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Xu
- * @author Antoine Toulme
  * 
  * A service for diagram preferences.
  * Creates a preference according to the request object.

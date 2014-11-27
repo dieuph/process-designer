@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Bounds represent the svg bound of a shape
+ * represent the svg bound of a shape
  */
 public class Bounds {
     Point lowerRight;

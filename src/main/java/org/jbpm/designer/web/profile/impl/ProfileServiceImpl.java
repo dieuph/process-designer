@@ -32,7 +32,6 @@ import org.jbpm.designer.web.profile.IDiagramProfileService;
 /**
  * a service to register profiles.
  * 
- * @author Antoine Toulme
  * 
  */
 public class ProfileServiceImpl implements IDiagramProfileService {
@@ -52,7 +51,6 @@ public class ProfileServiceImpl implements IDiagramProfileService {
         _registry.put("default", new DefaultProfileImpl(context));
         _registry.put("jbpm", new JbpmProfileImpl(context));
         _registry.put("drools", new JbpmProfileImpl(context));
-        _registry.put("epn", new EpnProfileImpl(context));
         _registry.put("workflow", new JbpmProfileImpl(context));
         
     }

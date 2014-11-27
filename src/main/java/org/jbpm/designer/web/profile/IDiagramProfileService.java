@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The profile service gives access to profiles.
- * @author Antoine Toulme
  *
  */
 public interface IDiagramProfileService {

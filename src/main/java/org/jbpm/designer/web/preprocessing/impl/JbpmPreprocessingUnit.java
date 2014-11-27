@@ -54,7 +54,6 @@ import sun.misc.BASE64Encoder;
 /**
  * JbpmPreprocessingUnit - preprocessing unit for the jbpm profile
  * 
- * @author Tihomir Surdilovic
  */
 public class JbpmPreprocessingUnit implements IDiagramPreprocessingUnit {
     private static final Logger _logger = 

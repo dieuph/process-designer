@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Bounded interface gets implement when spanning an area
+ * interface gets implement when spanning an area
  */
 public interface Bounded {
     /**

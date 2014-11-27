@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * @author Philipp Abstract Shape class represents an element of the canvas
+ * Abstract Shape class represents an element of the canvas
  *         stencilset independent
  */
 public class Shape implements Stencil, Bounded {

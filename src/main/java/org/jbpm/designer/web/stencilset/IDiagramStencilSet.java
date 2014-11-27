@@ -20,7 +20,6 @@ import java.io.InputStream;
 /**
  * An interface to define a stencilset in the editor
  * 
- * @author Antoine Toulme
  *
  */
 public interface IDiagramStencilSet {

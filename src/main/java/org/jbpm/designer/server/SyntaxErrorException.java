@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author Gero.Decker
  */
 public class SyntaxErrorException extends Exception {
 	

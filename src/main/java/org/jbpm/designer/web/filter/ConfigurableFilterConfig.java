@@ -24,7 +24,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
 /**
- * @author Antoine Toulme
  * A configurable filter config, so that users can set settings programmatically.
  *
  */

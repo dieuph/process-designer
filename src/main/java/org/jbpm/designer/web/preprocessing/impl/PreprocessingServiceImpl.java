@@ -30,7 +30,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 
 /**
  * 
- * @author Tihomir Surdilovic
  */
 public class PreprocessingServiceImpl implements IDiagramPreprocessingService {
 

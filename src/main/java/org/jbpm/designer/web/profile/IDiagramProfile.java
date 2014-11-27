@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.resource.Resource;
  * A profile for the editor to choose which stencilset 
  * and which plugins should be loaded.
  * 
- * @author Antoine Toulme
  *
  */
 public interface IDiagramProfile {

@@ -56,7 +56,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile.IDiagramUnmarshaller;
 
 /**
  * The implementation of the default profile for Process Designer.
- * @author Antoine Toulme
  */
 public class DefaultProfileImpl implements IDiagramProfile {
     

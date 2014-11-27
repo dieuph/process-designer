@@ -21,7 +21,6 @@ import org.jbpm.designer.web.profile.impl.ExternalInfo;
 /**
  * Sevlet for custom editors.
  * 
- * @author Tihomir Surdilovic
  */
 public class CustomEditorsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

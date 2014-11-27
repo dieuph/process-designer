@@ -23,7 +23,6 @@ import org.jbpm.designer.web.profile.impl.ExternalInfo;
  * 
  * Interaction with task forms for inline editor.
  * 
- * @author Tihomir Surdilovic
  */
 public class TaskFormsEditorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

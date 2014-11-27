@@ -31,7 +31,6 @@ import org.jbpm.designer.web.filter.IFilterFactory;
 
 
 /**
- * @author Antoine Toulme
  * 
  * a filter that can delegate to other filters detected via an OSGi declarative service.
  *

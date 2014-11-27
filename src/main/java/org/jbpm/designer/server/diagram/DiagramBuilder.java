@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author Philipp Helper class to build an abstract diagram structure out of
+ * Helper class to build an abstract diagram structure out of
  *         json
  */
 public class DiagramBuilder {

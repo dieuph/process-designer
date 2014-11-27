@@ -27,7 +27,6 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * Utility class for web servlets.
  * 
- * @author Tihomir Surdilovic
  *
  */
 public class ServletUtil {

@@ -26,7 +26,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 /**
  * A service to find pre-processing units.
  * 
- * @author Tihomir Surdilovic
  *
  */
 public interface IDiagramPreprocessingService {

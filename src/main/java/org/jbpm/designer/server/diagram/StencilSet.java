@@ -1,7 +1,7 @@
 package org.jbpm.designer.server.diagram;
 
 /**
- * @author Philipp Represents a Stencilset of a shape
+ * Represents a Stencilset of a shape
  */
 public class StencilSet {
     String url;

@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * A factory to plug and add stencilsets.
- * @author Antoine Toulme
  *
  */
 public interface IDiagramStencilSetFactory {

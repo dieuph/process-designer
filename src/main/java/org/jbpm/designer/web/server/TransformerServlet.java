@@ -87,7 +87,6 @@ import sun.misc.BASE64Encoder;
  * Transformer for svg process representation to
  * various formats.
  * 
- * @author Tihomir Surdilovic
  */
 public class TransformerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;

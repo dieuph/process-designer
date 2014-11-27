@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * An interface for other bundles to grab and register plugins.
  * 
- * @author Antoine Toulme
  *
  */
 public interface IDiagramPluginFactory {

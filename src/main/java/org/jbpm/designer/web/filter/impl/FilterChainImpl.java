@@ -27,7 +27,6 @@ import javax.servlet.ServletResponse;
 
 /**
  * 
- * @author Antoine Toulme
  * An implementation of filter chain to delegate to a series of stored filters.
  *
  */

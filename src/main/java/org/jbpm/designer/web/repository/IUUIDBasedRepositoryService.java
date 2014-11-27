@@ -18,7 +18,6 @@ package org.jbpm.designer.web.repository;
 import javax.servlet.ServletConfig;
 
 /**
- * @author Antoine Toulme
  * 
  * A factory to create IUUIDBasedRepository objects.
  *

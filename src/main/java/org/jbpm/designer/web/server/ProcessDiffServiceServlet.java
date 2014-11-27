@@ -34,7 +34,6 @@ import sun.misc.BASE64Encoder;
  * 
  * Queries Guvnor for process version info.
  * 
- * @author Tihomir Surdilovic
  */
 public class ProcessDiffServiceServlet extends HttpServlet {
 	private static final Logger _logger = Logger

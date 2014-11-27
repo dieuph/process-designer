@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * A service to access registered StencilSets.
  * 
- * @author Antoine Toulme
  *
  */
 public interface IDiagramStencilSetService {

@@ -44,7 +44,6 @@ import org.slf4j.LoggerFactory;
  * /plugin?name=ORYX.Save
  * will return the contents of the ORYX.Save plugin. 
  * 
- * @author Antoine Toulme
  */
 public class PluginServiceServlet extends HttpServlet {
     

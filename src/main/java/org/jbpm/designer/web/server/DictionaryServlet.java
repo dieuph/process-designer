@@ -42,7 +42,6 @@ import sun.misc.BASE64Encoder;
 
 /** 
  * Dictionary Servlet.
- * @author Tihomir Surdilovic
  */
 public class DictionaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

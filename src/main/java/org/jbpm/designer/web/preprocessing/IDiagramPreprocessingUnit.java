@@ -24,7 +24,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 /**
  * A service to perform pre-processing of data.
  * 
- * @author Tihomir Surdilovic
  *
  */
 public interface IDiagramPreprocessingUnit {

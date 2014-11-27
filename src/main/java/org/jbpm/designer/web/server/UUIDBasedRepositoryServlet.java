@@ -50,7 +50,6 @@ import org.osgi.framework.BundleReference;
 import org.osgi.framework.ServiceReference;
 
 /**
- * @author Antoine Toulme
  * a file based repository that uses the UUID element to save files in individual spots on the file system.
  *
  */

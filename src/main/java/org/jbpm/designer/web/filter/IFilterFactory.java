@@ -19,7 +19,6 @@ import javax.servlet.Filter;
 import javax.servlet.ServletException;
 
 /**
- * @author Antoine Toulme
  * 
  * the interface for creating servlet filters.
  *

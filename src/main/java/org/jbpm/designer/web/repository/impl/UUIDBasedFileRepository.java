@@ -35,7 +35,6 @@ import org.jbpm.designer.web.repository.IUUIDBasedRepository;
 
 
 /**
- * @author Antoine Toulme
  * a simple implementation of the UUID repository storing files directly inside the webapp.
  * 
  * Convenient for development.

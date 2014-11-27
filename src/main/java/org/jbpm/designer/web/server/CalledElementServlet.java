@@ -21,7 +21,6 @@ import org.json.JSONObject;
 /**
  * Sevlet for resolving called elements.
  * 
- * @author Tihomir Surdilovic
  */
 public class CalledElementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

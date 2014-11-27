@@ -22,7 +22,6 @@ import org.jbpm.designer.web.profile.IDiagramProfile;
 
 
 /**
- * @author Antoine Toulme
  * 
  * This interface defines the way the models should be saved and loaded.
  *
