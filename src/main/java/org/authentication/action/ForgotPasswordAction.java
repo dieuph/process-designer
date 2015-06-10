@@ -42,9 +42,9 @@ public class ForgotPasswordAction extends ActionSupport {
 				ps.executeUpdate();
 				
 				// initial email properties and sent it
-				String from = "dieuph2211@gmail.com";
+				String from = "email";
 				String to = email;
-				String password = "$DoubleD@1122";
+				String password = "password";
 				String subject = "Forgotten Process-Designer password";
 				String body = "Hi,<br /><br />"
 						+ "We received a request to change your password on Process-Designer.<br /><br />"
